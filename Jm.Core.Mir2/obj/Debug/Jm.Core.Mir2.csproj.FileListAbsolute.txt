@@ -1,0 +1,6 @@
+E:\Work\net code\Jm.Core\Jm.Core.Mir2\bin\Debug\Jm.Core.Mir2.dll
+E:\Work\net code\Jm.Core\Jm.Core.Mir2\bin\Debug\Jm.Core.Mir2.pdb
+E:\Work\net code\Jm.Core\Jm.Core.Mir2\obj\Debug\Jm.Core.Mir2.csprojAssemblyReference.cache
+E:\Work\net code\Jm.Core\Jm.Core.Mir2\obj\Debug\Jm.Core.Mir2.csproj.CoreCompileInputs.cache
+E:\Work\net code\Jm.Core\Jm.Core.Mir2\obj\Debug\Jm.Core.Mir2.dll
+E:\Work\net code\Jm.Core\Jm.Core.Mir2\obj\Debug\Jm.Core.Mir2.pdb
