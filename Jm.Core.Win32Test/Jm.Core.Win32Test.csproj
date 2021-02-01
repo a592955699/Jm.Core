@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{503FA875-6695-454B-AB62-CC5095064C8C}</ProjectGuid>
+    <ProjectGuid>{149307CB-7F47-4654-B4B9-7EBEB215C9AE}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Jm.Core.TestForms</RootNamespace>
-    <AssemblyName>Jm.Core.TestForms</AssemblyName>
+    <RootNamespace>Jm.Core.Win32Test</RootNamespace>
+    <AssemblyName>Jm.Core.Win32Test</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -46,7 +46,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BytesTranfer.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -81,9 +80,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Jm.Core.DmApi\Jm.Core.DmApi.csproj">
-      <Project>{656f87f6-effd-4ae6-8734-b510b33dfa89}</Project>
-      <Name>Jm.Core.DmApi</Name>
+    <ProjectReference Include="..\Jm.Core\Jm.Core.csproj">
+      <Project>{8C3D8941-64FB-47F3-A564-39F42C00BB8F}</Project>
+      <Name>Jm.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

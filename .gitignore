@@ -11,3 +11,7 @@ Jm.Core.TestForms/obj/
 /Jm.Core.TestForms/obj
 /Jm.Core.TestForms/bin
 /.vs/Jm.Core/v16
+Jm.Core/obj/
+Jm.Core.Win32Test/obj/
+Jm.Core.Win32Test/bin/
+Jm.Core/bin/
