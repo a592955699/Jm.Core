@@ -25,12 +25,14 @@ namespace Jm.Core.WinForm.Win32
 
         public MouseHook Mouse { get; private set; }
         public KeyboardHook Keyboard { get; private set; }
+        public ShellHook Shell { get; private set; }
 
         public GlobalHooks(IntPtr Handle)
         {
             _Handle = Handle;
 
             Mouse = new MouseHook(_Handle);
+            Shell = new ShellHook(_Handle);
             Keyboard = new KeyboardHook(_Handle);
         }
 
@@ -38,6 +40,7 @@ namespace Jm.Core.WinForm.Win32
         {
             Mouse.Stop();
             Keyboard.Stop();
+            Shell.Stop();
         }
     }
 }

@@ -17,17 +17,13 @@ namespace Jm.Core.WinForm.Win32
     /// <returns></returns>
     public delegate int HookProc(int nCode, Int32 wParam, IntPtr lParam);
 
-    /// <summary>
-    /// 鼠标更新事件委托声明
-    /// </summary>
-    /// <param name="x">x坐标</param>
-    /// <param name="y">y坐标</param>
-    public delegate void MouseUpdateEventHandler(int x, int y);
-
-    /// <summary>
-    /// 无返回委托声明
-    /// </summary>
-    public delegate void VoidCallback();
+    public delegate void HookReplacedEventHandler();
+    public delegate void WindowEventHandler(IntPtr Handle);
+    public delegate void SysCommandEventHandler(int SysCommand, int lParam);
+    public delegate void ActivateShellWindowEventHandler();
+    public delegate void TaskmanEventHandler();
+    public delegate void BasicHookEventHandler(IntPtr Handle1, IntPtr Handle2);
+    public delegate void WndProcEventHandler(IntPtr Handle, IntPtr Message, IntPtr wParam, IntPtr lParam);
 
     #endregion 委托定义
 }

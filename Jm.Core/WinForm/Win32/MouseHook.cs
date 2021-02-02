@@ -14,7 +14,7 @@ namespace Jm.Core.WinForm.Win32
     {
         public MouseHook(IntPtr handle) : base(handle) { }
         public override int IdHook { 
-            get { return (int)WH_Codes.WH_MOUSE_LL; }
+            get { return (int)HookType .WH_MOUSE_LL; }
         }
         public event MouseEventHandler OnMouseActivity;
 
@@ -37,17 +37,17 @@ namespace Jm.Core.WinForm.Win32
                 short mouseDelta = 0;
                 switch (wParam)
                 {
-                    case (int)WM_MOUSE.WM_LBUTTONDOWN:
+                    case (int)MsgType.WM_LBUTTONDOWN:
                         //case WM_LBUTTONUP: 
                         //case WM_LBUTTONDBLCLK: 
                         button = MouseButtons.Left;
                         break;
-                    case (int)WM_MOUSE.WM_RBUTTONDOWN:
+                    case (int)MsgType.WM_RBUTTONDOWN:
                         //case WM_RBUTTONUP: 
                         //case WM_RBUTTONDBLCLK: 
                         button = MouseButtons.Right;
                         break;
-                    case (int)WM_MOUSE.WM_MOUSEWHEEL:
+                    case (int)MsgType.WM_MOUSEWHEEL:
                         //If the message is WM_MOUSEWHEEL, the high-order word of mouseData member is the wheel delta. 
                         //One wheel click is defined as WHEEL_DELTA, which is 120. 
                         //(value >> 16) & 0xffff; retrieves the high-order word from the given 32-bit value
@@ -63,7 +63,7 @@ namespace Jm.Core.WinForm.Win32
                 //double clicks
                 int clickCount = 0;
                 if (button != MouseButtons.None)
-                    if (wParam == (int)WM_MOUSE.WM_LBUTTONDBLCLK || wParam == (int)WM_MOUSE.WM_RBUTTONDBLCLK) clickCount = 2;
+                    if (wParam == (int)MsgType.WM_LBUTTONDBLCLK || wParam == (int)MsgType.WM_RBUTTONDBLCLK) clickCount = 2;
                     else clickCount = 1;
 
                 //generate event 

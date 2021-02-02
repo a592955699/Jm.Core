@@ -50,16 +50,20 @@ namespace Jm.Core.Win32Test
         {
             _GlobalHooks.Mouse.Start();
             _GlobalHooks.Keyboard.Start();
+            _GlobalHooks.Shell.Start();
             if (!_GlobalHooks.Mouse.IsActive)
                 MessageBox.Show("Mouse 钩子状态:" + _GlobalHooks.Mouse.IsActive.ToString());
             if (!_GlobalHooks.Keyboard.IsActive)
-                MessageBox.Show("Keyboard 钩子状态:" + _GlobalHooks.Mouse.IsActive.ToString());
+                MessageBox.Show("Keyboard 钩子状态:" + _GlobalHooks.Keyboard.IsActive.ToString());
+            if (!_GlobalHooks.Shell.IsActive)
+                MessageBox.Show("Shell 钩子状态:" + _GlobalHooks.Shell.IsActive.ToString());
         }
 
         private void btn_UnBind_Click(object sender, EventArgs e)
         {
             _GlobalHooks.Mouse.Stop();
             _GlobalHooks.Keyboard.Stop();
+            _GlobalHooks.Shell.Stop();
         }
 
         private void button1_Click(object sender, EventArgs e)

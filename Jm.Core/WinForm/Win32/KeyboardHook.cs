@@ -10,11 +10,20 @@ using static Jm.Core.WinForm.Win32.CommonApis;
 
 namespace Jm.Core.WinForm.Win32
 {
+
+    //public delegate void HookReplacedEventHandler();
+    //public delegate void WindowEventHandler(IntPtr Handle);
+    //public delegate void SysCommandEventHandler(int SysCommand, int lParam);
+    //public delegate void ActivateShellWindowEventHandler();
+    //public delegate void TaskmanEventHandler();
+    //public delegate void BasicHookEventHandler(IntPtr Handle1, IntPtr Handle2);
+    //public delegate void WndProcEventHandler(IntPtr Handle, IntPtr Message, IntPtr wParam, IntPtr lParam);
+
     public class KeyboardHook : Hook
     {
         public KeyboardHook(IntPtr handle) : base(handle) { }
         public override int IdHook { 
-            get { return (int)WH_Codes.WH_KEYBOARD_LL; }
+            get { return (int)HookType .WH_KEYBOARD_LL; }
         }
 
         /// <summary>
@@ -40,6 +49,9 @@ namespace Jm.Core.WinForm.Win32
             if (IgnoreInput)//屏蔽键盘
                 return 1;
 
+
+
+
             bool handled = false;
             //it was ok and someone listens to events
             if ((nCode >= 0) && (this.OnKeyDown != null || this.OnKeyUp != null || this.OnKeyPress != null))
@@ -47,7 +59,7 @@ namespace Jm.Core.WinForm.Win32
                 //read structure KeyboardHookStruct at lParam
                 KeyboardHookStruct MyKeyboardHookStruct = (KeyboardHookStruct)Marshal.PtrToStructure(lParam, typeof(KeyboardHookStruct));
                 //raise KeyDown
-                if (this.OnKeyDown != null && (wParam == (int)WM_KEYBOARD.WM_KEYDOWN || wParam == (int)WM_KEYBOARD.WM_SYSKEYDOWN))
+                if (this.OnKeyDown != null && (wParam == (int)MsgType.WM_KEYDOWN || wParam == (int)MsgType.WM_SYSKEYDOWN))
                 {
                     Keys keyData = (Keys)MyKeyboardHookStruct.VKCode;
                     KeyEventArgs e = new KeyEventArgs(keyData);
@@ -56,13 +68,13 @@ namespace Jm.Core.WinForm.Win32
                 }
 
                 // raise KeyPress
-                if (this.OnKeyPress != null && wParam == (int)WM_KEYBOARD.WM_KEYDOWN)
+                if (this.OnKeyPress != null && wParam == (int)MsgType.WM_KEYDOWN)
                 {
                     bool isDownShift, isDownCapslock;
                     try
                     {
-                        isDownShift = ((CommonApis.GetKeyStates((int)VK_KEY.VK_SHIFT) & 0x80) == 0x80 ? true : false);
-                        isDownCapslock = (CommonApis.GetKeyStates((int)VK_KEY.VK_CAPITAL) != 0 ? true : false);
+                        isDownShift = ((CommonApis.GetKeyStates((int)VK_Codes.VK_SHIFT) & 0x80) == 0x80 ? true : false);
+                        isDownCapslock = (CommonApis.GetKeyStates((int)VK_Codes.VK_CAPITAL) != 0 ? true : false);
                     }
                     catch
                     {
@@ -87,7 +99,7 @@ namespace Jm.Core.WinForm.Win32
                     }
                 }
                 // raise KeyUp
-                if (this.OnKeyUp != null && (wParam == (int)WM_KEYBOARD.WM_KEYUP || wParam == (int)WM_KEYBOARD.WM_SYSKEYUP))
+                if (this.OnKeyUp != null && (wParam == (int)MsgType.WM_KEYUP || wParam == (int)MsgType.WM_SYSKEYUP))
                 {
                     Keys keyData = (Keys)MyKeyboardHookStruct.VKCode;
                     KeyEventArgs e = new KeyEventArgs(keyData);
