@@ -61,8 +61,8 @@ namespace Jm.Core.WinForm.Win32
                     bool isDownShift, isDownCapslock;
                     try
                     {
-                        isDownShift = ((CommonApis.GetKeyStates(CommonConsts.VK_SHIFT) & 0x80) == 0x80 ? true : false);
-                        isDownCapslock = (CommonApis.GetKeyStates(CommonConsts.VK_CAPITAL) != 0 ? true : false);
+                        isDownShift = ((CommonApis.GetKeyStates((int)VK_KEY.VK_SHIFT) & 0x80) == 0x80 ? true : false);
+                        isDownCapslock = (CommonApis.GetKeyStates((int)VK_KEY.VK_CAPITAL) != 0 ? true : false);
                     }
                     catch
                     {
