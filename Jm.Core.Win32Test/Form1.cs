@@ -20,40 +20,56 @@ namespace Jm.Core.Win32Test
             InitializeComponent();
 
             _GlobalHooks = new GlobalHooks(this.Handle);
-            _GlobalHooks.Shell.WindowCreated += new GlobalHooks.WindowEventHandler(WindowCreated);
-            _GlobalHooks.Shell.Start();
+            _GlobalHooks.Keyboard.OnKeyDown += Mouse_KeyDown;
+            _GlobalHooks.Keyboard.OnKeyPress += Mouse_KeyPress;
+            _GlobalHooks.Keyboard.OnKeyUp += Mouse_KeyUp;
+            _GlobalHooks.Mouse.OnMouseActivity += Mouse_OnMouseActivity;
         }
 
-        private void WindowCreated(IntPtr Handle)
+        private void Mouse_OnMouseActivity(object sender, MouseEventArgs e)
         {
-            int capacity = CommonApis.GetWindowTextLength(new HandleRef(null, Handle)) * 2;
-            StringBuilder stringBuilder = new StringBuilder(capacity);
-            CommonApis.GetWindowText(new HandleRef(null, Handle), stringBuilder, stringBuilder.Capacity);
-            Console.WriteLine(stringBuilder.ToString());
+            lbMouseState.Text = "X:" + e.X + " Y:" + e.Y;
+        }
 
-            int id = 0;
-            CommonApis.GetWindowThreadProcessId(Handle, out id);
-            if (id != 0)
-            {
-                System.Diagnostics.Process p = System.Diagnostics.Process.GetProcessById(id);
-                Console.WriteLine(p.MainModule.FileName);
+        private void Mouse_KeyUp(object sender, KeyEventArgs e)
+        {
+            lbKeyState.Text = "键盘抬起, " + e.KeyData.ToString() + " 键码:" + e.KeyValue;
+        }
 
-                ////Loop through and see if this is a program we want to monitor
-                //for (int i = 0; i < settings.Count; i++)
-                //{
-                //    ProgramSettings set = settings[i];
-                //    if ((p.MainModule.FileName.ToLower() == set.Filepath.ToLower()) && (set.Enabled))
-                //    {
-                //        ModifyProperties(set, Handle);
+        private void Mouse_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            lbKeyState.Text = "键盘输入,"+ e.KeyChar;
+        }
 
-                //        //Show a balloon tip if we're set to
-                //        if (checkBalloonStart.Checked)
-                //        {
-                //            trayIcon.ShowBalloonTip(3000, "Program Profile Applied", "Window Manager has applied a profile to " + p.MainModule.ModuleName, ToolTipIcon.Info);
-                //        }
-                //    }
-                //}
-            }
+        private void Mouse_KeyDown(object sender, KeyEventArgs e)
+        {
+            lbKeyState.Text = "键盘按下, " + e.KeyData.ToString() + " 键码:" + e.KeyValue;
+        }
+
+        private void btn_Bind_Click(object sender, EventArgs e)
+        {
+            _GlobalHooks.Mouse.Start();
+            _GlobalHooks.Keyboard.Start();
+            if (!_GlobalHooks.Mouse.IsActive)
+                MessageBox.Show("Mouse 钩子状态:" + _GlobalHooks.Mouse.IsActive.ToString());
+            if (!_GlobalHooks.Keyboard.IsActive)
+                MessageBox.Show("Keyboard 钩子状态:" + _GlobalHooks.Mouse.IsActive.ToString());
+        }
+
+        private void btn_UnBind_Click(object sender, EventArgs e)
+        {
+            _GlobalHooks.Mouse.Stop();
+            _GlobalHooks.Keyboard.Stop();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            _GlobalHooks.Keyboard.IgnoreInput = true;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            _GlobalHooks.Keyboard.IgnoreInput = false;
         }
     }
 }

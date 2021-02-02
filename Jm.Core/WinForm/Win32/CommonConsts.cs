@@ -1,7 +1,13 @@
-﻿using HWND = System.IntPtr;
+﻿using System;
+using HWND = System.IntPtr;
 
 namespace Jm.Core.WinForm.Win32
 {
+    /// <summary>
+    /// 钩子常量定义，建议使用枚举类型处理
+    /// 参考 CommonEnums
+    /// </summary>
+    [Obsolete]
     public class CommonConsts
     {
         #region  shell32
@@ -1339,6 +1345,10 @@ namespace Jm.Core.WinForm.Win32
         public const int WH_MAX = 11;
         public const int WH_MIN = (-1);
         public const int WH_MOUSE = 7;
+        /// <summary>
+        /// 鼠标钩子常量(from Microsoft SDK  Winuser.h )
+        /// </summary>
+        public const int WH_MOUSE_LL = 14;
         public const int WH_MSGFILTER = (-1);
         public const int WH_SHELL = 10;
         public const int WH_SYSMSGFILTER = 6;
@@ -1485,6 +1495,11 @@ namespace Jm.Core.WinForm.Win32
         public const int WM_QUIT = 0x12;
         public const int WM_RBUTTONDBLCLK = 0x206;
         public const int WM_RBUTTONDOWN = 0x204;
+        /// <summary>
+        /// 滚轮滚动
+        /// </summary>
+        /// <remarks>WINNT4.0以上才支持此消息</remarks>
+        public const int WM_MOUSEWHEEL = 0x020A;
         public const int WM_RBUTTONUP = 0x205;
         public const int WM_RENDERALLFORMATS = 0x306;
         public const int WM_RENDERFORMAT = 0x305;
