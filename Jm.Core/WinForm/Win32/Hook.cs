@@ -35,7 +35,7 @@ namespace Jm.Core.WinForm.Win32
         /// <summary>
         /// 定义钩子句柄.
         /// </summary>
-        protected static IntPtr _hHook = IntPtr.Zero;
+        protected IntPtr _hHook = IntPtr.Zero;
 
         ~Hook()
         {
