@@ -15,3 +15,7 @@ Jm.Core/obj/
 Jm.Core.Win32Test/obj/
 Jm.Core.Win32Test/bin/
 Jm.Core/bin/
+Jm.Core.Win32/obj/
+Jm.Core.Win32/bin/
+WindowManager/bin/
+WindowManager/obj/
