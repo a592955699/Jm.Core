@@ -1,5 +1,5 @@
-﻿using Jm.Core.AStartTest;
-using Jm.Core.Mir2.Server.VisualMapInfo.Class;
+﻿using Jm.Core.Mir2.Server.VisualMapInfo.Class;
+using Jm.Core.Mir2.Server.VisualMapInfo.Class.AStart;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -25,7 +25,7 @@ namespace Jm.Core.MIr2Test
 
         int width, height;
         ReadMap readMap = new ReadMap();
-        List<Point> points = new List<Point>();
+        List<APoint> points = new List<APoint>();
         private void Form1_Load(object sender, EventArgs e)
         {
            
@@ -33,20 +33,19 @@ namespace Jm.Core.MIr2Test
 
         private void btn_findPath_Click(object sender, EventArgs e)
         {
-            if(points.Count!=2)
+            if (points.Count != 2)
             {
                 MessageBox.Show("请选择开始、结束点位置!");
                 return;
             }
             var start = points[0];
             var end = points[1];
-
-            AStar aStar = new AStar(readMap.Maze);
             Stopwatch stopwatch = new Stopwatch();
+            PathGrid pathGrid = new PathGrid(readMap.Width, readMap.Height, readMap.Maze);
             stopwatch.Start();
-            var tempPoints = aStar.FindPath(new APoint(start.X, start.Y), new APoint(end.X, end.Y));
+            var tempPoints = pathGrid.FindPath(start, end);
             stopwatch.Stop();
-            if (tempPoints==null || tempPoints.Count==0)
+            if (tempPoints == null || tempPoints.Count == 0)
             {
                 lbl_info.Text = "未找到路线！";
                 return;
@@ -94,7 +93,7 @@ namespace Jm.Core.MIr2Test
                 pic_map.Image = reCopyMap();
             }
 
-            points.Add(new Point(e.X, e.Y));
+            points.Add(new APoint(e.X, e.Y));
 
             var start = points[0];
             lbl_start.Text = $"X:{start.X} Y:{start.Y}";

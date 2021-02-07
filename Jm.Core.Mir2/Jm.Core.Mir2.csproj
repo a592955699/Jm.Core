@@ -45,9 +45,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Server\VisualMapInfo\Class\AStart\APoint.cs" />
+    <Compile Include="Server\VisualMapInfo\Class\AStart\PathGrid.cs" />
+    <Compile Include="Server\VisualMapInfo\Class\AStart\PathNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server\VisualMapInfo\Class\LockBitmap.cs" />
-    <Compile Include="Server\VisualMapInfo\Class\AStar.cs" />
     <Compile Include="Server\VisualMapInfo\Class\ReadMap.cs" />
   </ItemGroup>
   <ItemGroup>
