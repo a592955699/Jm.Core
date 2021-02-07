@@ -19,3 +19,6 @@ Jm.Core.Win32/obj/
 Jm.Core.Win32/bin/
 WindowManager/bin/
 WindowManager/obj/
+Jm.Core.AStartTest/obj/
+Jm.Core.MIr2Test/obj/
+Jm.Core.MIr2Test/bin/
