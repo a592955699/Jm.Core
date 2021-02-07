@@ -14,9 +14,9 @@ using System.Windows.Forms;
 
 namespace Jm.Core.MIr2Test
 {
-    public partial class Form1 : Form
+    public partial class Map : Form
     {
-        public Form1()
+        public Map()
         {
             InitializeComponent();
             width = Width;
@@ -128,11 +128,13 @@ namespace Jm.Core.MIr2Test
                     readMap.mapFile = file;
                     readMap.Load();
 
-
+                    lbl_fileName.Text = fileDialog.FileName;
+                    lbl_MapSize.Text = $"{readMap.Width} * {readMap.Height}";
+                    //lbl_mapName.Text = readMap.MapTitle;
                     pic_map.Width = readMap.Width;
                     panel_map.Width = readMap.Width;
                     pic_map.Height = readMap.Height;
-
+                    
                     pic_map.Image = reCopyMap();
 
                     var w = gb_mapinfo.Width + readMap.Width;

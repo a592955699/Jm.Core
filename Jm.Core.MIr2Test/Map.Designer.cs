@@ -1,7 +1,7 @@
 ﻿
 namespace Jm.Core.MIr2Test
 {
-    partial class Form1
+    partial class Map
     {
         /// <summary>
         /// 必需的设计器变量。
@@ -30,12 +30,14 @@ namespace Jm.Core.MIr2Test
         private void InitializeComponent()
         {
             this.gb_mapinfo = new System.Windows.Forms.GroupBox();
+            this.btn_brower = new System.Windows.Forms.Button();
+            this.lbl_info = new System.Windows.Forms.Label();
             this.lbl_end = new System.Windows.Forms.Label();
             this.lbl_start = new System.Windows.Forms.Label();
             this.lbl_point = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
+            this.lbl_MapSize = new System.Windows.Forms.Label();
+            this.lbl_mapName = new System.Windows.Forms.Label();
+            this.lbl_fileName = new System.Windows.Forms.Label();
             this.btn_findPath = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -45,8 +47,6 @@ namespace Jm.Core.MIr2Test
             this.label1 = new System.Windows.Forms.Label();
             this.panel_map = new System.Windows.Forms.Panel();
             this.pic_map = new System.Windows.Forms.PictureBox();
-            this.lbl_info = new System.Windows.Forms.Label();
-            this.btn_brower = new System.Windows.Forms.Button();
             this.gb_mapinfo.SuspendLayout();
             this.panel_map.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pic_map)).BeginInit();
@@ -59,9 +59,9 @@ namespace Jm.Core.MIr2Test
             this.gb_mapinfo.Controls.Add(this.lbl_end);
             this.gb_mapinfo.Controls.Add(this.lbl_start);
             this.gb_mapinfo.Controls.Add(this.lbl_point);
-            this.gb_mapinfo.Controls.Add(this.label9);
-            this.gb_mapinfo.Controls.Add(this.label8);
-            this.gb_mapinfo.Controls.Add(this.label7);
+            this.gb_mapinfo.Controls.Add(this.lbl_MapSize);
+            this.gb_mapinfo.Controls.Add(this.lbl_mapName);
+            this.gb_mapinfo.Controls.Add(this.lbl_fileName);
             this.gb_mapinfo.Controls.Add(this.btn_findPath);
             this.gb_mapinfo.Controls.Add(this.label6);
             this.gb_mapinfo.Controls.Add(this.label5);
@@ -76,6 +76,25 @@ namespace Jm.Core.MIr2Test
             this.gb_mapinfo.TabIndex = 0;
             this.gb_mapinfo.TabStop = false;
             this.gb_mapinfo.Text = "Map info";
+            // 
+            // btn_brower
+            // 
+            this.btn_brower.Location = new System.Drawing.Point(6, 180);
+            this.btn_brower.Name = "btn_brower";
+            this.btn_brower.Size = new System.Drawing.Size(77, 23);
+            this.btn_brower.TabIndex = 14;
+            this.btn_brower.Text = "Select map";
+            this.btn_brower.UseVisualStyleBackColor = true;
+            this.btn_brower.Click += new System.EventHandler(this.btn_brower_Click);
+            // 
+            // lbl_info
+            // 
+            this.lbl_info.AutoSize = true;
+            this.lbl_info.Location = new System.Drawing.Point(7, 155);
+            this.lbl_info.Name = "lbl_info";
+            this.lbl_info.Size = new System.Drawing.Size(41, 12);
+            this.lbl_info.TabIndex = 13;
+            this.lbl_info.Text = "提示：";
             // 
             // lbl_end
             // 
@@ -104,32 +123,32 @@ namespace Jm.Core.MIr2Test
             this.lbl_point.TabIndex = 10;
             this.lbl_point.Text = "--";
             // 
-            // label9
+            // lbl_MapSize
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(70, 64);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(17, 12);
-            this.label9.TabIndex = 9;
-            this.label9.Text = "--";
+            this.lbl_MapSize.AutoSize = true;
+            this.lbl_MapSize.Location = new System.Drawing.Point(70, 64);
+            this.lbl_MapSize.Name = "lbl_MapSize";
+            this.lbl_MapSize.Size = new System.Drawing.Size(17, 12);
+            this.lbl_MapSize.TabIndex = 9;
+            this.lbl_MapSize.Text = "--";
             // 
-            // label8
+            // lbl_mapName
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(70, 42);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(17, 12);
-            this.label8.TabIndex = 8;
-            this.label8.Text = "--";
+            this.lbl_mapName.AutoSize = true;
+            this.lbl_mapName.Location = new System.Drawing.Point(70, 42);
+            this.lbl_mapName.Name = "lbl_mapName";
+            this.lbl_mapName.Size = new System.Drawing.Size(17, 12);
+            this.lbl_mapName.TabIndex = 8;
+            this.lbl_mapName.Text = "--";
             // 
-            // label7
+            // lbl_fileName
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(70, 21);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(17, 12);
-            this.label7.TabIndex = 7;
-            this.label7.Text = "--";
+            this.lbl_fileName.AutoSize = true;
+            this.lbl_fileName.Location = new System.Drawing.Point(70, 21);
+            this.lbl_fileName.Name = "lbl_fileName";
+            this.lbl_fileName.Size = new System.Drawing.Size(17, 12);
+            this.lbl_fileName.TabIndex = 7;
+            this.lbl_fileName.Text = "--";
             // 
             // btn_findPath
             // 
@@ -215,25 +234,6 @@ namespace Jm.Core.MIr2Test
             this.pic_map.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pic_map_MouseClick);
             this.pic_map.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pic_map_MouseMove);
             // 
-            // lbl_info
-            // 
-            this.lbl_info.AutoSize = true;
-            this.lbl_info.Location = new System.Drawing.Point(7, 155);
-            this.lbl_info.Name = "lbl_info";
-            this.lbl_info.Size = new System.Drawing.Size(41, 12);
-            this.lbl_info.TabIndex = 13;
-            this.lbl_info.Text = "提示：";
-            // 
-            // btn_brower
-            // 
-            this.btn_brower.Location = new System.Drawing.Point(6, 180);
-            this.btn_brower.Name = "btn_brower";
-            this.btn_brower.Size = new System.Drawing.Size(77, 23);
-            this.btn_brower.TabIndex = 14;
-            this.btn_brower.Text = "Select map";
-            this.btn_brower.UseVisualStyleBackColor = true;
-            this.btn_brower.Click += new System.EventHandler(this.btn_brower_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -267,9 +267,9 @@ namespace Jm.Core.MIr2Test
         private System.Windows.Forms.Label lbl_end;
         private System.Windows.Forms.Label lbl_start;
         private System.Windows.Forms.Label lbl_point;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label lbl_MapSize;
+        private System.Windows.Forms.Label lbl_mapName;
+        private System.Windows.Forms.Label lbl_fileName;
         private System.Windows.Forms.Label lbl_info;
         private System.Windows.Forms.Button btn_brower;
     }
