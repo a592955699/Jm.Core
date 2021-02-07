@@ -144,7 +144,7 @@ namespace Jm.Core.MIr2Test
                     if (w < width)
                         w = width;
                     this.Width = w;
-                    this.Height = readMap.Height < height ? height : readMap.Height;
+                    this.Height = readMap.Height < height ? height : (readMap.Height+40);
 
                     //this.Width = 999;
                     //this.Height = 999;

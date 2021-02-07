@@ -92,9 +92,9 @@ namespace Jm.Core.MIr2Test
             this.lbl_info.AutoSize = true;
             this.lbl_info.Location = new System.Drawing.Point(7, 155);
             this.lbl_info.Name = "lbl_info";
-            this.lbl_info.Size = new System.Drawing.Size(41, 12);
+            this.lbl_info.Size = new System.Drawing.Size(59, 12);
             this.lbl_info.TabIndex = 13;
-            this.lbl_info.Text = "提示：";
+            this.lbl_info.Text = "Message：";
             // 
             // lbl_end
             // 
@@ -234,15 +234,15 @@ namespace Jm.Core.MIr2Test
             this.pic_map.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pic_map_MouseClick);
             this.pic_map.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pic_map_MouseMove);
             // 
-            // Form1
+            // Map
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(684, 461);
             this.Controls.Add(this.panel_map);
             this.Controls.Add(this.gb_mapinfo);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "Map";
+            this.Text = "Mir Map Tool By rober.hu";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.gb_mapinfo.ResumeLayout(false);
             this.gb_mapinfo.PerformLayout();
