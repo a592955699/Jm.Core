@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
@@ -35,7 +36,7 @@ namespace Jm.Core.MIr2Test
         {
             if (points.Count != 2)
             {
-                MessageBox.Show("请选择开始、结束点位置!");
+                MessageBox.Show("Please select start point and end point!");
                 return;
             }
             var start = points[0];
@@ -47,16 +48,14 @@ namespace Jm.Core.MIr2Test
             stopwatch.Stop();
             if (tempPoints == null || tempPoints.Count == 0)
             {
-                lbl_info.Text = "未找到路线！";
+                lbl_info.Text = "Can't find the path！";
                 return;
             }
-            lbl_info.Text = $"耗时:{stopwatch.ElapsedMilliseconds}\r\n消耗:{tempPoints.Count}";
+            lbl_info.Text = $"times:{stopwatch.ElapsedMilliseconds}\r\nDistance:{tempPoints.Count}";
 
-            Bitmap newBitmap = new Bitmap(readMap.clippingZone.Width, readMap.clippingZone.Height);
-            if (CopyBitmap(readMap.clippingZone, newBitmap))
-            {
-                pic_map.Image = newBitmap;
-            }
+            var newBitmap = (Bitmap)readMap.clippingZone.Clone();
+            pic_map.Image = newBitmap;
+            
             foreach (var item in tempPoints)
             {
                 newBitmap.SetPixel(item.X, item.Y, Color.Red);
@@ -71,26 +70,21 @@ namespace Jm.Core.MIr2Test
         /// <summary>
         /// 重绘地图
         /// </summary>
-        private Bitmap reCopyMap()
-        {
-            Bitmap newBitmap = new Bitmap(readMap.Width, readMap.Height);
-            CopyBitmap(readMap.clippingZone, newBitmap);
-            return newBitmap;
-        }
+
         private void pic_map_MouseClick(object sender, MouseEventArgs e)
         {
             lbl_info.Text = "";
 
             if(readMap.Maze[e.X,e.Y]==1)
             {
-                MessageBox.Show("该位置为障碍物!");
+                MessageBox.Show("This point is a bar!");
                 return;
             }
             if (points.Count == 2)
             {
                 lbl_start.Text = lbl_end.Text = "--";
                 points.Clear();
-                pic_map.Image = reCopyMap();
+                pic_map.Image = (Bitmap)readMap.clippingZone.Clone();
             }
 
             points.Add(new APoint(e.X, e.Y));
@@ -104,21 +98,30 @@ namespace Jm.Core.MIr2Test
                 lbl_end.Text = $"X:{end.X} Y:{end.Y}";
             }
 
-            var bitmap = reCopyMap();
-            foreach (var item in points)
-            {
-                bitmap.SetPixel(item.X, item.Y, Color.Red);
-            }
-            pic_map.Image = bitmap;
+            var bitmap = (Bitmap)readMap.clippingZone.Clone();
 
+            using (Graphics g = Graphics.FromImage(bitmap))
+            {
+                foreach (var item in points)
+                {
+                    //大小，椭圆的还是半圆的还是月饼自己写参数
+                    Rectangle r = new Rectangle(item.X, item.Y, 6, 6);
+                    using (LinearGradientBrush br = new LinearGradientBrush(r, Color.Red, Color.Red, LinearGradientMode.Vertical))
+                    {
+                        g.FillEllipse(br, r);
+                    }
+                }
+            }
+            
+            pic_map.Image = bitmap;
         }
 
         private void btn_brower_Click(object sender, EventArgs e)
         {
             OpenFileDialog fileDialog = new OpenFileDialog();
             fileDialog.Multiselect = true;
-            fileDialog.Title = "请选择文件";
-            fileDialog.Filter = "所有文件(map)|*.map"; //设置要选择的文件的类型
+            fileDialog.Title = "Please select a file.";
+            fileDialog.Filter = "All files(map)|*.map"; //设置要选择的文件的类型
             if (fileDialog.ShowDialog() == DialogResult.OK)
             {
                 string file = fileDialog.FileName;//返回文件的完整路径     
@@ -128,14 +131,14 @@ namespace Jm.Core.MIr2Test
                     readMap.mapFile = file;
                     readMap.Load();
 
-                    lbl_fileName.Text = fileDialog.FileName;
+                    lbl_fileName.Text = fileDialog.SafeFileName;
                     lbl_MapSize.Text = $"{readMap.Width} * {readMap.Height}";
                     //lbl_mapName.Text = readMap.MapTitle;
                     pic_map.Width = readMap.Width;
                     panel_map.Width = readMap.Width;
                     pic_map.Height = readMap.Height;
                     
-                    pic_map.Image = reCopyMap();
+                    pic_map.Image = (Bitmap)readMap.clippingZone.Clone();
 
                     var w = gb_mapinfo.Width + readMap.Width;
                     if (w < width)
@@ -151,61 +154,6 @@ namespace Jm.Core.MIr2Test
                     MessageBox.Show(ex.ToString());
                 }
             }
-        }
-
-        public bool CopyBitmap(Bitmap source, Bitmap destination)
-        {
-            if ((source.Width != destination.Width) || (source.Height != destination.Height) || (source.PixelFormat != destination.PixelFormat))
-            {
-                return false;
-            }
-
-            int bitdepth_per_pixel = Bitmap.GetPixelFormatSize(source.PixelFormat) / 8;
-
-            if (bitdepth_per_pixel != 1 && bitdepth_per_pixel != 3 && bitdepth_per_pixel != 4)
-            {
-                return false;
-            }
-
-            BitmapData source_bitmapdata = null;
-            BitmapData destination_bitmapdata = null;
-
-            try
-            {
-                source_bitmapdata = source.LockBits(new Rectangle(0, 0, source.Width, source.Height), ImageLockMode.ReadWrite,
-                                                source.PixelFormat);
-                destination_bitmapdata = destination.LockBits(new Rectangle(0, 0, destination.Width, destination.Height), ImageLockMode.ReadWrite,
-                                                destination.PixelFormat);
-
-                int source_bitmapdata_bitdepth_width = source_bitmapdata.Width * bitdepth_per_pixel;
-                int source_bitmapdata_height = source_bitmapdata.Height;
-                int source_bitmapdata_bitdepth_stride = source_bitmapdata.Stride;
-
-                unsafe
-                {
-                    byte* source_ptr = (byte*)source_bitmapdata.Scan0;
-                    byte* destination_ptr = (byte*)destination_bitmapdata.Scan0;
-
-                    int offset = source_bitmapdata_bitdepth_stride - source_bitmapdata_bitdepth_width;
-
-                    for (int i = 0; i < source_bitmapdata_height; i++)
-                    {
-                        for (int j = 0; j < source_bitmapdata_bitdepth_width; j++, source_ptr++, destination_ptr++)
-                        {
-                            *destination_ptr = *source_ptr;
-                        }
-
-                        source_ptr += offset;
-                        destination_ptr += offset;
-                    }
-                }
-
-                source.UnlockBits(source_bitmapdata);
-                destination.UnlockBits(destination_bitmapdata);
-
-                return true;
-            }
-            catch { return false; }
         }
     }
 }
