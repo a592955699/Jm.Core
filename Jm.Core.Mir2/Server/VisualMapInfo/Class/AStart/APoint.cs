@@ -24,7 +24,8 @@ namespace Jm.Core.Mir2.Server.VisualMapInfo.Class.AStart
 
         public override int GetHashCode()
         {
-            return X ^ (Y * 256);
+            //return X ^ (Y * 256);
+            return X + Y << 16;
         }
 
         public override string ToString()

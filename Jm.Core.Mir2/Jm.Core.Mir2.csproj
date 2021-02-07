@@ -45,6 +45,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helper\Models\MirContext.cs" />
+    <Compile Include="Helper\Models\Mp.cs" />
+    <Compile Include="Helper\Models\Hp.cs" />
+    <Compile Include="Helper\Models\BaseMinMax.cs" />
+    <Compile Include="Helper\Models\BaseNumber.cs" />
+    <Compile Include="Helper\Models\Position.cs" />
+    <Compile Include="Helper\Models\RoleInfo.cs" />
+    <Compile Include="Helper\Models\Weaponry.cs" />
     <Compile Include="Server\VisualMapInfo\Class\AStart\APoint.cs" />
     <Compile Include="Server\VisualMapInfo\Class\AStart\PathGrid.cs" />
     <Compile Include="Server\VisualMapInfo\Class\AStart\PathNode.cs" />
