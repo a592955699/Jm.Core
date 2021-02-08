@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,11 +7,11 @@ using System.Threading.Tasks;
 namespace Jm.Core.Mir2.Helper.Models
 {
     /// <summary>
-    /// 位置信息
+    /// 物品信息
     /// </summary>
-    public class Position
+    public class ItemInfo
     {
         public string Name { get; set; }
-        public Point Point { get; set; } = new Point();
+        public PositionInfo Position { get; set; }
     }
 }

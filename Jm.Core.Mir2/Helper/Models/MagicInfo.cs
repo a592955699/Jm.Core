@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 namespace Jm.Core.Mir2.Helper.Models
 {
     /// <summary>
-    /// 魔法值
+    /// 技能列表
     /// </summary>
-    public class Mp : BaseNumber
+    public class MagicInfo
     {
+        public string Name { get; set; }
     }
 }

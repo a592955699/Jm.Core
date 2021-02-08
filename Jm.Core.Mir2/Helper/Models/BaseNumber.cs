@@ -34,5 +34,19 @@ namespace Jm.Core.Mir2.Helper.Models
             else
                 return $"{Current}/{Max} ({Percentage:f2}%)";
         }
+        /// <summary>
+        /// 将 Current 归 0
+        /// </summary>
+        public void Zero()
+        {
+            this.Current = 0;
+        }
+        /// <summary>
+        /// 将 Current、Clear 归 0
+        /// </summary>
+        public void Clear()
+        {
+            this.Max = this.Current = 0;
+        }
     }
 }

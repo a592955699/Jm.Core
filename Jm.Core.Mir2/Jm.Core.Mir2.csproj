@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -45,14 +46,40 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helper\Models\MirContext.cs" />
-    <Compile Include="Helper\Models\Mp.cs" />
-    <Compile Include="Helper\Models\Hp.cs" />
+    <Compile Include="Helper\Consts.cs" />
+    <Compile Include="Helper\Enums\AttackMode.cs" />
+    <Compile Include="Helper\Enums\BuffType.cs" />
+    <Compile Include="Helper\Enums\DoorState.cs" />
+    <Compile Include="Helper\Enums\EquipmentSlot.cs" />
+    <Compile Include="Helper\Enums\IntelligentCreaturePickupMode.cs" />
+    <Compile Include="Helper\Enums\ItemType.cs" />
+    <Compile Include="Helper\Enums\MirAction.cs" />
+    <Compile Include="Helper\Enums\MirDirection.cs" />
+    <Compile Include="Helper\Enums\Monster.cs" />
+    <Compile Include="Helper\Enums\PetMode.cs" />
+    <Compile Include="Helper\Enums\PoisonType.cs" />
+    <Compile Include="Helper\Enums\RunType.cs" />
+    <Compile Include="Helper\Enums\Spell.cs" />
+    <Compile Include="Helper\Enums\SpellEffect.cs" />
+    <Compile Include="Helper\Enums\StatType.cs" />
+    <Compile Include="Helper\Extensions\MasterExtensions.cs" />
+    <Compile Include="Helper\Extensions\PointExtensions.cs" />
+    <Compile Include="Helper\IMirAction.cs" />
+    <Compile Include="Helper\AbstractMirMain.cs" />
+    <Compile Include="Helper\MirAction.cs" />
+    <Compile Include="Helper\Models\ItemInfo.cs" />
+    <Compile Include="Helper\Models\MagicInfo.cs" />
+    <Compile Include="Helper\Models\MapInfo.cs" />
+    <Compile Include="Helper\Models\MasterInfo.cs" />
+    <Compile Include="Helper\MirContext.cs" />
     <Compile Include="Helper\Models\BaseMinMax.cs" />
     <Compile Include="Helper\Models\BaseNumber.cs" />
-    <Compile Include="Helper\Models\Position.cs" />
+    <Compile Include="Helper\Models\MirSetting.cs" />
+    <Compile Include="Helper\Models\NPCInfo.cs" />
+    <Compile Include="Helper\Models\PositionInfo.cs" />
+    <Compile Include="Helper\Models\RoleAttributeInfo.cs" />
     <Compile Include="Helper\Models\RoleInfo.cs" />
-    <Compile Include="Helper\Models\Weaponry.cs" />
+    <Compile Include="Helper\Models\WeaponryInfo.cs" />
     <Compile Include="Server\VisualMapInfo\Class\AStart\APoint.cs" />
     <Compile Include="Server\VisualMapInfo\Class\AStart\PathGrid.cs" />
     <Compile Include="Server\VisualMapInfo\Class\AStart\PathNode.cs" />
@@ -63,5 +90,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

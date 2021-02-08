@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Jm.Core.Mir2.Helper.Models
 {
-    public class Weaponry
+    public class WeaponryInfo
     {
         /// <summary>
         /// 衣服
@@ -49,4 +49,6 @@ namespace Jm.Core.Mir2.Helper.Models
         /// </summary>
         public string Medal { get; set; }
     }
+
+    
 }

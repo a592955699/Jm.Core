@@ -4,12 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Jm.Core.Mir2.Helper.Models
+namespace Jm.Core.Mir2.Helper.Enums
 {
     /// <summary>
-    /// 生命值
+    /// 门状态
     /// </summary>
-    public class Hp : BaseNumber
+    public enum DoorState : byte
     {
+        Closed = 0,
+        Opening = 1,
+        Open = 2,
+        Closing = 3
     }
 }
