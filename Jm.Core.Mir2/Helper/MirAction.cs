@@ -23,88 +23,6 @@ namespace Jm.Core.Mir2.Helper
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// 计算位置
-        /// </summary>
-        /// <param name="p1"></param>
-        /// <param name="p2"></param>
-        /// <returns></returns>
-        public MirDirection CalculationDirection(Point p1, Point p2)
-        {
-            if (p2.IsEmpty || p1.IsEmpty)
-                return MirDirection.None;
-
-            if (p1.X == p2.X && p1.Y < p2.Y)
-            {
-                return MirDirection.Up;
-            }
-            if (p1.X == p2.X && p1.Y > p2.Y)
-            {
-                return MirDirection.Down;
-            }
-            else if (p1.X < p2.X && p1.Y < p2.Y)
-            {
-                return MirDirection.UpRight;
-            }
-            else if (p1.X < p2.X && p1.Y > p2.Y)
-            {
-                return MirDirection.DownRight;
-            }
-            else if (p1.X > p2.X && p1.Y == p2.Y)
-            {
-                return MirDirection.Left;
-            }
-            else if (p1.X > p2.X && p1.Y > p2.Y)
-            {
-                return MirDirection.DownLeft;
-            }
-            else if (p1.X > p2.X && p1.Y < p2.Y)
-            {
-                return MirDirection.UpLeft;
-            }
-            else
-                return MirDirection.None;
-        }
-
-        public MirDirection CalculationDirection(APoint p1, APoint p2)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// 计算距离
-        /// </summary>
-        /// <param name="p1"></param>
-        /// <param name="p2"></param>
-        /// <returns></returns>
-        public int CalculationDistance(Point p1, Point p2)
-        {
-            int dx = Math.Abs(p1.X - p2.Y);
-            int dy = Math.Abs(p1.Y - p2.Y);
-            return dx > dy ? dx : dy;
-        }
-        /// <summary>
-        /// 估算距离
-        /// </summary>
-        /// <param name="p1"></param>
-        /// <param name="p2"></param>
-        /// <returns></returns>
-        public int CalculationDistance(APoint p1, APoint p2)
-        {
-            throw new NotImplementedException();
-        }
-        /// <summary>
-        /// 计算移动方式
-        /// </summary>
-        /// <param name="p1"></param>
-        /// <param name="p2"></param>
-        /// <param name="p3"></param>
-        /// <returns></returns>
-        public RunType CalculationRunType(APoint p1, APoint p2, APoint p3)
-        {
-            return (p1.X - p2.X == p2.X - p3.X && p1.Y - p2.Y == p2.Y - p3.Y) ? RunType.FastRun : RunType.Normal;
-        }
-
         public bool CloseMagicInfo()
         {
             throw new NotImplementedException();
@@ -145,7 +63,7 @@ namespace Jm.Core.Mir2.Helper
             throw new NotImplementedException();
         }
 
-        public List<ItemInfo> GetItemInfo()
+        public List<ItemInfo> FindItems()
         {
             throw new NotImplementedException();
         }
@@ -155,7 +73,7 @@ namespace Jm.Core.Mir2.Helper
             throw new NotImplementedException();
         }
 
-        public List<MasterInfo> GetMaster()
+        public List<MasterInfo> FindMaster()
         {
             throw new NotImplementedException();
         }

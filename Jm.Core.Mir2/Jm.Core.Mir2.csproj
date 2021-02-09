@@ -62,10 +62,11 @@
     <Compile Include="Helper\Enums\Spell.cs" />
     <Compile Include="Helper\Enums\SpellEffect.cs" />
     <Compile Include="Helper\Enums\StatType.cs" />
+    <Compile Include="Helper\Extensions\ItemExtendsions.cs" />
     <Compile Include="Helper\Extensions\MasterExtensions.cs" />
     <Compile Include="Helper\Extensions\PointExtensions.cs" />
     <Compile Include="Helper\IMirAction.cs" />
-    <Compile Include="Helper\AbstractMirMain.cs" />
+    <Compile Include="Helper\AbstractMirService.cs" />
     <Compile Include="Helper\MirAction.cs" />
     <Compile Include="Helper\Models\ItemInfo.cs" />
     <Compile Include="Helper\Models\MagicInfo.cs" />

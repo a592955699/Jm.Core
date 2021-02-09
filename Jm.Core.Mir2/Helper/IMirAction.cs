@@ -63,15 +63,15 @@ namespace Jm.Core.Mir2.Helper
         /// <returns></returns>
         PositionInfo GetPosition();
         /// <summary>
-        /// 获取怪物信息
+        /// 找怪物信息
         /// </summary>
         /// <returns></returns>
-        List<MasterInfo> GetMaster();
+        List<MasterInfo> FindMaster();
         /// <summary>
-        /// 获取地上物品信息
+        /// 找地上物品信息
         /// </summary>
         /// <returns></returns>
-        List<ItemInfo> GetItemInfo();
+        List<ItemInfo> FindItems();
         /// <summary>
         /// 拾取物品
         /// </summary>
@@ -174,27 +174,5 @@ namespace Jm.Core.Mir2.Helper
         /// <param name="itemInfo"></param>
         /// <returns></returns>
         bool Storage(ItemInfo itemInfo);
-        /// <summary>
-        /// 计算移动方向
-        /// </summary>
-        /// <param name="p1"></param>
-        /// <param name="p2"></param>
-        /// <returns></returns>
-        MirDirection CalculationDirection(APoint p1, APoint p2);
-        /// <summary>
-        /// 计算距离
-        /// </summary>
-        /// <param name="p1"></param>
-        /// <param name="p2"></param>
-        /// <returns></returns>
-        int CalculationDistance(APoint p1, APoint p2);
-        /// <summary>
-        /// 计算移动方式
-        /// </summary>
-        /// <param name="p1"></param>
-        /// <param name="p2"></param>
-        /// <param name="p3"></param>
-        /// <returns></returns>
-        RunType CalculationRunType(APoint p1, APoint p2, APoint p3);
     }
 }

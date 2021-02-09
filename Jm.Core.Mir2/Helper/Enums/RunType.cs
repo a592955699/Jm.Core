@@ -11,7 +11,13 @@ namespace Jm.Core.Mir2.Helper.Enums
     /// </summary>
     public enum RunType : byte
     {
-        Normal = 0,//正常跑步，需要起步
-        FastRun = 1,//不需要起步，直接跑步
+        /// <summary>
+        /// 走
+        /// </summary>
+        Normal = 0,
+        /// <summary>
+        /// 跑
+        /// </summary>
+        FastRun = 1,
     }
 }

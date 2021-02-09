@@ -3,6 +3,7 @@ using Jm.Core.Mir2.Helper.Extensions;
 using Jm.Core.Mir2.Helper.Models;
 using Jm.Core.Mir2.Server.VisualMapInfo.Class.AStart;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
@@ -12,17 +13,16 @@ namespace Jm.Core.Mir2.Helper
     /// 挂机流程控制抽象类
     /// <para>调用 IMirAction 方法来实现功能流程，不在该类中些具体的单个小点的实现</para>
     /// </summary>
-    public abstract class AbstractMirMain
+    public abstract class AbstractMirService
     {
         #region 构造函数
-        public AbstractMirMain(IMirAction mirAction, MirContext mirContext, CancellationTokenSource cancellationTokenSource)
+        public AbstractMirService(MirContext mirContext, CancellationTokenSource cancellationTokenSource)
         {
-            this.MirAction = mirAction;
             this.MirContext = mirContext;
         }
 
         public MirContext MirContext { get; private set; }
-        public IMirAction MirAction { get; private set; }
+        public IMirAction MirAction { get { return MirContext.MirAction; } }
         public CancellationTokenSource CancellationTokenSource { get; private set; }
         #endregion
 
@@ -153,9 +153,9 @@ namespace Jm.Core.Mir2.Helper
         /// <param name="cancellationTokenSource"></param>
         /// <param name="distance"></param>
         /// <returns></returns>
-        public string MoveToPoint(MapInfo mapInfo, APoint point, CancellationTokenSource cancellationTokenSource, int distance = 2)
+        public string MoveToPoint(MapInfo mapInfo, APoint point, CancellationTokenSource cancellationTokenSource, int distance = 2, Func<bool> func = null)
         {
-            var position = MirAction.GetPosition();
+            var position = MirContext.Position;
             //同一个地图判断
             if (!position.MapInfo.Equals(mapInfo))
             {
@@ -163,7 +163,7 @@ namespace Jm.Core.Mir2.Helper
             }
 
             //距离判断
-            if (MirAction.CalculationDistance(position.Point, point) <= distance)
+            if (CalculationDistance(position.Point, point) <= distance)
             {
                 return string.Empty;
             }
@@ -173,9 +173,9 @@ namespace Jm.Core.Mir2.Helper
              * 2.循环路径，一个个点的走过去（需要考虑人怪卡位问题）
              */
             string message = string.Empty;
+
             #region 1.找到两个点的路径
-            PathGrid pathGrid = new PathGrid(MirContext.ReadMap.Width, MirContext.ReadMap.Height, MirContext.ReadMap.Maze);
-            var pathPoints = pathGrid.FindPath(position.Point, point);
+            var pathPoints = FindPath(position, point);
             if (!pathPoints.Any())
             {
                 return Consts.AutoRoteFail;
@@ -184,12 +184,12 @@ namespace Jm.Core.Mir2.Helper
 
             #region 循环路径，一个个点的走过去（需要考虑人怪卡位问题）
             APoint firstAPoint = pathPoints.FirstOrDefault();
-            APoint secondAPoint = null;
+            //APoint secondAPoint = null;
             MirDirection mirDirection = MirDirection.None;
             RunType runType = RunType.FastRun;
             //移动是否成功
             bool moveState = false;
-
+            bool reFindPath = false;
             //循环条件
             //还有点位没有走到
             //没有被取消
@@ -198,30 +198,22 @@ namespace Jm.Core.Mir2.Helper
             while (firstAPoint != null
                 && !cancellationTokenSource.IsCancellationRequested
                 && position.MapInfo.Equals(mapInfo)
-                && MirAction.CalculationDistance(position.Point, point) > distance)
+                && CalculationDistance(position.Point, point) > distance)
             {
-
                 try
                 {
                     #region 计算移动方向
-                    mirDirection = MirAction.CalculationDirection(position.Point, firstAPoint);
+                    mirDirection = CalculationDirection(position.Point, firstAPoint);
                     if (mirDirection == MirDirection.None)
                     {
-                        message = Consts.CalculationDirectionFail;
-                        break;
+                        //已经到达位置，需要重新计算路线
+                        pathPoints = FindPath(MirContext.Position, point);
+                        continue;
                     }
                     #endregion
 
                     #region 计算移动方式
-                    if (pathPoints.Count > 1)
-                    {
-                        secondAPoint = pathPoints[1];
-                    }
-                    else
-                    {
-                        secondAPoint = null;
-                    }
-                    runType = MirAction.CalculationRunType(position.Point, firstAPoint, secondAPoint);
+                    runType = CalculationRunType(position, firstAPoint);
                     #endregion
 
                     #region 移动
@@ -230,171 +222,64 @@ namespace Jm.Core.Mir2.Helper
                     {
                         //更新最后移动时间
                         MirContext.LastMoveTime = new DateTime();
-
                         pathPoints.Remove(firstAPoint);
+
+                        //打怪过程有移动过，这重新寻路
+                        if (func != null)
+                        {
+                            reFindPath = func();
+                        }
+                    }
+                    else
+                    {
+                        var nextPoint = GetNextPoint(position.Point, mirDirection, runType);
+                        //#TODO，如果是跑，需要再处理下
+                        //移动失败，15秒内不走这个点
+                        MirContext.AddBartPoint(nextPoint, position.MapInfo, DateTime.Now.AddSeconds(15));
+
+                        if(LongTimeNotMove())
+                        {
+                            //长时间被堵住，随用随机飞
+                        }
+                        //被堵后，重新寻路
+                        reFindPath = true;
+                    }
+                    if(reFindPath)
+                    {
+                        pathPoints = FindPath(MirContext.Position, point);
                     }
                     #endregion
                 }
                 finally
                 {
                     firstAPoint = pathPoints.FirstOrDefault();
-                    position = MirAction.GetPosition();
+                    position = MirContext.Position;
                 }
             }
             #endregion
             return message;
         }
-        /// <summary>
-        /// 边打边走到位置
-        /// <para>可以考虑寻路一个线程，找怪打怪一个线程，两个线程通讯协同处理</para>
-        /// </summary>
-        /// <param name="mapInfo"></param>
-        /// <param name="point"></param>
-        /// <param name="cancellationTokenSource"></param>
-        /// <param name="distance"></param>
-        /// <returns></returns>
-        [Obsolete]
+
         public string MoveAndFireToPoint(MapInfo mapInfo, APoint point, CancellationTokenSource cancellationTokenSource, int distance = 2)
         {
-            var position = MirAction.GetPosition();
-            //同一个地图判断
-            if (!position.MapInfo.Equals(mapInfo))
-            {
-                return Consts.NotSameMap;
-            }
-
-            //距离判断
-            if (MirAction.CalculationDistance(position.Point, point) <= distance)
-            {
-                return string.Empty;
-            }
-
-            /**
-             * 1.找到两个点的路径
-             * 2.循环路径，一个个点的走过去（需要考虑人怪卡位问题）
-             * 3.走一步，就找怪，打怪，拾取物品
-             */
-            string message = string.Empty;
-            #region 1.找到两个点的路径
-            PathGrid pathGrid = new PathGrid(MirContext.ReadMap.Width, MirContext.ReadMap.Height, MirContext.ReadMap.Maze);
-            var pathPoints = pathGrid.FindPath(position.Point, point);
-            if (!pathPoints.Any())
-            {
-                return Consts.AutoRoteFail;
-            }
-            #endregion
-
-            #region 循环路径，一个个点的走过去（需要考虑人怪卡位问题）
-            APoint firstAPoint = pathPoints.FirstOrDefault();
-            APoint secondAPoint = null;
-            MirDirection mirDirection = MirDirection.None;
-            RunType runType = RunType.FastRun;
-            //移动是否成功
-            bool moveState = false;
-
-            //循环条件
-            //还有点位没有走到
-            //没有被取消
-            //同一个地图
-            //距离大于 distance
-            while (firstAPoint != null
-                && !cancellationTokenSource.IsCancellationRequested
-                && position.MapInfo.Equals(mapInfo)
-                && MirAction.CalculationDistance(position.Point, point) > distance)
-            {
-
-                try
+            return MoveToPoint(mapInfo,point,cancellationTokenSource,distance,()=> {
+                bool move = true;
+                var masters = MirAction.FindMaster();
+                while(masters.Any())
                 {
-                    #region 计算移动方向
-                    mirDirection = MirAction.CalculationDirection(position.Point, firstAPoint);
-                    if (mirDirection == MirDirection.None)
-                    {
-                        message = Consts.CalculationDirectionFail;
-                        break;
-                    }
-                    #endregion
-
-                    #region 计算移动方式
-                    if (pathPoints.Count > 1)
-                    {
-                        secondAPoint = pathPoints[1];
-                    }
-                    else
-                    {
-                        secondAPoint = null;
-                    }
-                    runType = MirAction.CalculationRunType(position.Point, firstAPoint, secondAPoint);
-                    #endregion
-
-                    #region 移动
-                    moveState = MirAction.Move(mirDirection, runType);
-                    if (moveState)
-                    {
-                        //更新最后移动时间
-                        MirContext.LastMoveTime = new DateTime();
-                        pathPoints.Remove(firstAPoint);
-
-                        bool move = false;
-
-                        #region 打怪
-                        var masters = MirAction.GetMaster();
-                        while (masters.Any() && !cancellationTokenSource.IsCancellationRequested)
-                        {
-                            position = MirAction.GetPosition();
-                            var nearByMaster = masters.NearbyMaster(position);
-
-                            //开始打怪
-                            MirContext.LastAttackTime = DateTime.Now;
-                            MirAction.AttackMaster(nearByMaster, cancellationTokenSource);
-
-                            masters = MirAction.GetMaster();
-
-                            move = true;
-                        } 
-                        #endregion
-
-                        #region 拾取物品
-                        var items = MirAction.GetItemInfo();
-                        if(items.Any())
-                        {
-                            position = MirAction.GetPosition();
-                            foreach (var item in items)
-                            {
-                                if (cancellationTokenSource.IsCancellationRequested)
-                                {
-                                    break;
-                                }
-                                position = MirAction.GetPosition();
-                                MoveToPoint(position.MapInfo, item.Position.Point, cancellationTokenSource, 0);
-                                move = true;
-                                MirAction.PickupItem(item);
-                            }
-                        }
-                        #endregion
-
-                        #region 由于打怪和拾取物品，需要修正线路
-                        if (move)
-                        {
-                            message = MoveAndFireToPoint(position.MapInfo, firstAPoint, cancellationTokenSource, 0);
-                            if (!string.IsNullOrWhiteSpace(message))
-                            {
-                                return message;
-                            }
-                        }
-                        #endregion
-
-                        position = MirAction.GetPosition();
-                    }
-                    #endregion
+                    move = true;
+                    var master = masters.NearbyMaster(MirContext.Position);
+                    MirAction.AttackMaster(master, cancellationTokenSource);
                 }
-                finally
+                var items = MirAction.FindItems();
+                while(items.Any())
                 {
-                    firstAPoint = pathPoints.FirstOrDefault();
-                    position = MirAction.GetPosition();
+                    //#TODO ,需要判断物品所在位置被人怪站住的情况
+                    var item = items.NearbyItem(MirContext.Position);
+                    MirAction.PickupItem(item);
                 }
-            }
-            #endregion
-            return message;
+                return move;
+            });
         }
         /// <summary>
         /// 范围内随机移动
@@ -411,6 +296,150 @@ namespace Jm.Core.Mir2.Helper
         #endregion
 
         #region 内部方法
+        #region 移动相关
+        /// <summary>
+        /// 检测四面八方都被堵路
+        /// <para>5分钟未成功移动过</para>
+        /// </summary>
+        /// <returns></returns>
+        protected bool LongTimeNotMove()
+        {
+            return (DateTime.Now - MirContext.LastMoveTime).TotalMinutes > 5;
+        }
+
+        /// <summary>
+        /// 计算位置方向
+        /// </summary>
+        /// <param name="p1"></param>
+        /// <param name="p2"></param>
+        /// <returns></returns>
+        public MirDirection CalculationDirection(APoint p1, APoint p2)
+        {
+            if (p2 == null || p1 == null)
+                return MirDirection.None;
+
+            if (p1.X == p2.X && p1.Y < p2.Y)
+            {
+                return MirDirection.Up;
+            }
+            if (p1.X == p2.X && p1.Y > p2.Y)
+            {
+                return MirDirection.Down;
+            }
+            else if (p1.X < p2.X && p1.Y < p2.Y)
+            {
+                return MirDirection.UpRight;
+            }
+            else if (p1.X < p2.X && p1.Y > p2.Y)
+            {
+                return MirDirection.DownRight;
+            }
+            else if (p1.X > p2.X && p1.Y == p2.Y)
+            {
+                return MirDirection.Left;
+            }
+            else if (p1.X > p2.X && p1.Y > p2.Y)
+            {
+                return MirDirection.DownLeft;
+            }
+            else if (p1.X > p2.X && p1.Y < p2.Y)
+            {
+                return MirDirection.UpLeft;
+            }
+            else
+                return MirDirection.None;
+        }
+        public APoint GetNextPoint(APoint point, MirDirection mirDirection, RunType runType)
+        {
+            int step = runType == RunType.Normal ? 1 : 2;
+            APoint temp = null;
+            switch (mirDirection)
+            {
+                case MirDirection.Up:
+                    temp = new APoint(point.X, point.Y + step);
+                    break;
+                case MirDirection.UpRight:
+                    temp = new APoint(point.X + step, point.Y + step);
+                    break;
+                case MirDirection.Right:
+                    temp = new APoint(point.X + step, point.Y);
+                    break;
+                case MirDirection.DownRight:
+                    temp = new APoint(point.X + step, point.Y - step);
+                    break;
+                case MirDirection.Down:
+                    temp = new APoint(point.X, point.Y - step);
+                    break;
+                case MirDirection.DownLeft:
+                    temp = new APoint(point.X - step, point.Y - step);
+                    break;
+                case MirDirection.Left:
+                    temp = new APoint(point.X - step, point.Y );
+                    break;
+                case MirDirection.UpLeft:
+                    temp = new APoint(point.X - step, point.Y + step);
+                    break;
+            }
+            return temp;
+        }
+
+        /// <summary>
+        /// 计算距离
+        /// </summary>
+        /// <param name="p1"></param>
+        /// <param name="p2"></param>
+        /// <returns></returns>
+        public int CalculationDistance(APoint p1, APoint p2)
+        {
+            int dx = Math.Abs(p1.X - p2.Y);
+            int dy = Math.Abs(p1.Y - p2.Y);
+            return dx > dy ? dx : dy;
+        }
+        /// <summary>
+        /// 计算移动方式
+        /// <para>必须保证 p1 p2相临再跑一步的距离内</para>
+        /// </summary>
+        /// <param name="p1"></param>
+        /// <param name="p2"></param>
+        /// <param name="p3"></param>
+        /// <returns></returns>
+        public RunType CalculationRunType(PositionInfo position, APoint p2)
+        {
+            var xd = position.Point.X - p2.X;
+            var yd = position.Point.Y - p2.Y;
+            if (Math.Abs(xd) <= 1 && Math.Abs(yd) <= 1)
+            {
+                return RunType.Normal;
+            }
+            else
+            {
+                //APoint p3 = new APoint(p2.X + x, p2.Y + y);
+                var maze = MirContext.Maze(position.MapInfo);
+                int x = p2.X + xd;
+                int y = p2.Y + yd;
+                if(x>MirContext.ReadMap.Width ||y>MirContext.ReadMap.Height)//跑步终点坐标超出地图
+                {
+                    return RunType.Normal;
+                }
+                else
+                {
+                    //跑步终点坐标有障碍物则走，否则跑
+                    return maze[x, y] == 1 ? RunType.Normal : RunType.FastRun;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 过地图
+        /// </summary>
+        /// <param name="fromMap"></param>
+        /// <param name="toMap"></param>
+        /// <returns></returns>
+        protected string GoToMap(MapInfo fromMap, MapInfo toMap, CancellationTokenSource cancellationTokenSource)
+        {
+            return string.Empty;
+        } 
+        #endregion
 
         #region 买/卖/修
         /// <summary>
@@ -600,6 +629,18 @@ namespace Jm.Core.Mir2.Helper
         #endregion
 
         /// <summary>
+        /// 寻路
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
+        protected List<APoint> FindPath(PositionInfo position, APoint to)
+        {
+            PathGrid pathGrid = new PathGrid(MirContext.ReadMap.Width, MirContext.ReadMap.Height, MirContext.Maze(position.MapInfo));
+            return pathGrid.FindPath(position.Point, to);
+        }
+
+        /// <summary>
         /// 存装备
         /// </summary>
         /// <returns></returns>
@@ -671,16 +712,6 @@ namespace Jm.Core.Mir2.Helper
             //检查空包裹格子数量
             //检查装备持久度
             return CheckPackage() || CheckDurability() || CheckPotion();
-        }
-        /// <summary>
-        /// 过地图
-        /// </summary>
-        /// <param name="fromMap"></param>
-        /// <param name="toMap"></param>
-        /// <returns></returns>
-        protected string GoToMap(MapInfo fromMap, MapInfo toMap, CancellationTokenSource cancellationTokenSource)
-        {
-            return string.Empty;
         }
         #endregion
 
