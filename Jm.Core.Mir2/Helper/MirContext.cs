@@ -55,19 +55,19 @@ namespace Jm.Core.Mir2.Helper.Models
         /// <summary>
         /// 当前位置信息
         /// </summary>
-        public PositionInfo Position { get { return MirAction.GetPosition(); } }
+        public PositionInfo Position { get { return MirAction.GetPosition().Data; } }
         /// <summary>
         /// 生命值
         /// </summary>
-        public BaseNumber HP { get { return MirAction.GetHP(); } }
+        public BaseNumber HP { get { return MirAction.GetHP().Data; } }
         /// <summary>
         /// 魔法值
         /// </summary>
-        public BaseNumber MP { get { return MirAction.GetMP(); } }
+        public BaseNumber MP { get { return MirAction.GetMP().Data; } }
         /// <summary>
         /// 等级
         /// </summary>
-        public int Level { get { return MirAction.GetLevel(); } }
+        public int Level { get { return MirAction.GetLevel().Data; } }
         /// <summary>
         /// 巡逻点规则 
         /// true:按照 PatrolPoint 索引升序对应的 Point 巡逻

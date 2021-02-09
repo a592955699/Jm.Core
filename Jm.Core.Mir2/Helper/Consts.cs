@@ -15,11 +15,11 @@ namespace Jm.Core.Mir2.Helper
         /// <summary>
         /// 不在同一个地图
         /// </summary>
-        public const string NotSameMap = "NotSameMap";
+        public const int NotSameMap = 2;
         /// <summary>
         /// 自动寻路失败
         /// </summary>
-        public const string AutoRoteFail = "AutoRoteFail";
+        public const int AutoRoteFail = 1;
         /// <summary>
         /// 计算移动方向失败
         /// </summary>

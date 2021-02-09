@@ -22,13 +22,13 @@ namespace Jm.Core.Mir2.Helper
         /// <param name="mirDirection">移动方向</param>
         /// <param name="runType">走/跑</param>
         /// <returns></returns>
-        bool Move(MirDirection mirDirection, RunType runType);
+        ActionResult<bool> Move(MirDirection mirDirection, RunType runType);
         /// <summary>
         /// 随机移动
         /// </summary>
         /// <param name="runType"></param>
         /// <returns></returns>
-        bool RandomMove(RunType runType);
+        ActionResult<bool> RandomMove(RunType runType);
         /// <summary>
         /// 指定范围内随机移动
         /// </summary>
@@ -36,143 +36,143 @@ namespace Jm.Core.Mir2.Helper
         /// <param name="leftUp"></param>
         /// <param name="rightDown"></param>
         /// <returns></returns>
-        bool RandomMove(RunType runType,Point leftUp,Point rightDown);
+        ActionResult<bool> RandomMove(RunType runType,Point leftUp,Point rightDown);
         /// <summary>
         /// 获取 Hp
         /// </summary>
         /// <returns></returns>
-        BaseNumber GetHP();
+        ActionResult<BaseNumber> GetHP();
         /// <summary>
         /// 获取魔法值
         /// </summary>
         /// <returns></returns>
-        BaseNumber GetMP();
+        ActionResult<BaseNumber> GetMP();
         /// <summary>
         /// 获取等级
         /// </summary>
         /// <returns></returns>
-        int GetLevel();
+        ActionResult<int> GetLevel();
         /// <summary>
         /// 获取角色名
         /// </summary>
         /// <returns></returns>
-        string GetRoleName();
+        ActionResult<string> GetRoleName();
         /// <summary>
         /// 获取位置信息
         /// </summary>
         /// <returns></returns>
-        PositionInfo GetPosition();
+        ActionResult<PositionInfo> GetPosition();
         /// <summary>
         /// 找怪物信息
         /// </summary>
         /// <returns></returns>
-        List<MasterInfo> FindMaster();
+        ActionResult<List<MasterInfo>> FindMaster();
         /// <summary>
         /// 找地上物品信息
         /// </summary>
         /// <returns></returns>
-        List<ItemInfo> FindItems();
+        ActionResult<List<ItemInfo>> FindItems();
         /// <summary>
         /// 拾取物品
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        bool PickupItem(ItemInfo item);
+        ActionResult<bool> PickupItem(ItemInfo item);
         /// <summary>
         /// 打怪
         /// </summary>
         /// <param name="masterInfo"></param>
-        void AttackMaster(MasterInfo masterInfo, CancellationTokenSource cancellationTokenSource);
+        ActionResult AttackMaster(MasterInfo masterInfo, CancellationTokenSource cancellationTokenSource);
         /// <summary>
         /// 小退
         /// </summary>
         /// <returns></returns>
-        bool ExitRole();
+        ActionResult<bool> ExitRole();
         /// <summary>
         /// 大退
         /// </summary>
         /// <returns></returns>
-        bool Exit();
+        ActionResult<bool> Exit();
         /// <summary>
         /// 对话 NPC
         /// </summary>
         /// <returns></returns>
-        bool DialogueNPC(NPCInfo npcInfo);
+        ActionResult<bool> DialogueNPC(NPCInfo npcInfo);
         /// <summary>
         /// 选择对话内容
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        bool SelectDialogueContent(string content);
+        ActionResult<bool> SelectDialogueContent(string content);
         /// <summary>
         /// 打开包裹面板
         /// </summary>
         /// <returns></returns>
-        bool OpenPackage();
+        ActionResult<bool> OpenPackage();
         /// <summary>
         /// 关闭包裹面板
         /// </summary>
         /// <returns></returns>
-        bool ClosePackage();
+        ActionResult<bool> ClosePackage();
         /// <summary>
         /// 打开角色信息面板（F9）
         /// </summary>
         /// <returns></returns>
-        bool OpenRoleInfo();
+        ActionResult<bool> OpenRoleInfo();
         /// <summary>
         /// 关闭角色信息面板（F9）
         /// </summary>
         /// <returns></returns>
-        bool CloseRoleInfo();
+        ActionResult<bool> CloseRoleInfo();
         /// <summary>
         /// 打开角色属性面板（F9）
         /// </summary>
         /// <returns></returns>
-        bool OpenRoleAttributeInfo();
+        ActionResult<bool> OpenRoleAttributeInfo();
         /// <summary>
         /// 关闭角色属性面板（F9）
         /// </summary>
         /// <returns></returns>
-        bool CloseRoleAttributeInfo();
+        ActionResult<bool> CloseRoleAttributeInfo();
         /// <summary>
         /// 打开技能面板
         /// </summary>
         /// <returns></returns>
-        bool OpenMagicInfo();
+        ActionResult<bool> OpenMagicInfo();
         /// <summary>
         /// 关闭技能面板
         /// </summary>
         /// <returns></returns>
-        bool CloseMagicInfo();
+        ActionResult<bool> CloseMagicInfo();
         /// <summary>
         /// 买装备
         /// </summary>
         /// <param name="itemInfo"></param>
         /// <returns></returns>
-        bool Buy(ItemInfo itemInfo);
+        ActionResult<bool> Buy(ItemInfo itemInfo);
         /// <summary>
         /// 卖装备
         /// </summary>
         /// <param name="itemInfo"></param>
         /// <returns></returns>
-        bool Sell(ItemInfo itemInfo);
+        ActionResult<bool> Sell(ItemInfo itemInfo);
         /// <summary>
         /// 修理装备
         /// </summary>
         /// <param name="itemInfo"></param>
         /// <returns></returns>
-        bool Repair(ItemInfo itemInfo);
+        ActionResult<bool> Repair(ItemInfo itemInfo);
         /// <summary>
         /// 特修装备
         /// </summary>
         /// <param name="itemInfo"></param>
         /// <returns></returns>
-        bool SRepair(ItemInfo itemInfo);
+        ActionResult<bool> SRepair(ItemInfo itemInfo);
         /// <summary>
         /// 存装备
         /// </summary>
         /// <param name="itemInfo"></param>
         /// <returns></returns>
-        bool Storage(ItemInfo itemInfo);
+        ActionResult<bool> Storage(ItemInfo itemInfo);
     }
 }

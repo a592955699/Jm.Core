@@ -38,93 +38,94 @@ namespace Jm.Core.Mir2.Helper
                 string message = string.Empty;
 
                 #region 判断回城
-                bool needBackCity = CheckBackToCity();
-                if (needBackCity)
+                var checkBackToCity = CheckBackToCity();
+                if (checkBackToCity.Success)
                 {
                     #region 回城
-                    message = BackToCity(MirContext.CancellationTokenSource);
-                    if (!string.IsNullOrWhiteSpace(message))
+                    var backToCity = BackToCity(MirContext.CancellationTokenSource);
+                  
+                    if (!backToCity.Success)
                     {
-                        Warn("回城异常：" + message);
+                        Warn("回城异常：" + backToCity.Message);
                         break;
                     }
                     #endregion
 
                     #region 存、卖、修
-                    message = Storage(CancellationTokenSource);
-                    if (!string.IsNullOrWhiteSpace(message))
+                    var storage = Storage(CancellationTokenSource);
+                    if (!storage.Success)
                     {
-                        Warn("存装备异常：" + message);
+                        Warn("存装备异常：" + storage.Message);
                         break;
                     }
 
-                    message = SellRing(CancellationTokenSource);
-                    if (!string.IsNullOrWhiteSpace(message))
+                    var sellRing = SellRing(CancellationTokenSource);
+                    if (!sellRing.Success)
                     {
-                        Warn("卖戒指异常：" + message);
+                        Warn("卖戒指异常：" + sellRing.Message);
                         break;
                     }
 
-                    message = RepairRing(CancellationTokenSource);
-                    if (!string.IsNullOrWhiteSpace(message))
+                    var repairRing = RepairRing(CancellationTokenSource);
+                    if (!repairRing.Success)
                     {
-                        Warn("修戒指异常：" + message);
+                        Warn("修戒指异常：" + repairRing.Message);
                         break;
                     }
 
-                    message = SellBracelet(CancellationTokenSource);
-                    if (!string.IsNullOrWhiteSpace(message))
+                    var sellBracelet = SellBracelet(CancellationTokenSource);
+                    if (!sellBracelet.Success)
                     {
-                        Warn("卖手镯异常：" + message);
+                        Warn("卖手镯异常：" + sellBracelet.Message);
                         break;
                     }
 
-                    message = RepairBracelet(CancellationTokenSource);
-                    if (!string.IsNullOrWhiteSpace(message))
+                    var repairBracelet = RepairBracelet(CancellationTokenSource);
+                    if (!repairBracelet.Success)
                     {
-                        Warn("修手镯异常：" + message);
+                        Warn("修手镯异常：" + repairBracelet.Message);
                         break;
                     }
 
-                    message = SellNecklace(CancellationTokenSource);
-                    if (!string.IsNullOrWhiteSpace(message))
+                    var sellNecklace = SellNecklace(CancellationTokenSource);
+                    if (!sellNecklace.Success)
                     {
-                        Warn("卖项链异常：" + message);
+                        Warn("卖项链异常：" + sellNecklace.Message);
                         break;
                     }
 
-                    message = RepairNecklace(CancellationTokenSource);
-                    if (!string.IsNullOrWhiteSpace(message))
+                    var repairNecklace = RepairNecklace(CancellationTokenSource);
+                    if (!repairNecklace.Success)
                     {
-                        Warn("修项链异常：" + message);
+                        Warn("修项链异常：" + repairNecklace.Message);
                         break;
                     }
 
-                    message = SellHelmet(CancellationTokenSource);
-                    if (!string.IsNullOrWhiteSpace(message))
+                    var sellHelmet = SellHelmet(CancellationTokenSource);
+                    if (!sellHelmet.Success)
                     {
-                        Warn("卖头盔异常：" + message);
+                        Warn("卖头盔异常：" + sellHelmet.Message);
                         break;
                     }
 
-                    message = RepairHelmet(CancellationTokenSource);
-                    if (!string.IsNullOrWhiteSpace(message))
+                    var repairHelmet = RepairHelmet(CancellationTokenSource);
+                    if (!repairHelmet.Success)
                     {
-                        Warn("修头盔异常：" + message);
+                        Warn("修头盔异常：" + repairHelmet.Message);
                         break;
                     }
 
-                    message = SellArmour(CancellationTokenSource);
-                    if (!string.IsNullOrWhiteSpace(message))
+                    var sellArmour = SellArmour(CancellationTokenSource);
+                    if (!sellArmour.Success)
                     {
-                        Warn("卖衣服异常：" + message);
+                        Warn("卖衣服异常：" + sellArmour.Message);
                         break;
                     }
 
-                    message = RepairArmour(CancellationTokenSource);
-                    if (!string.IsNullOrWhiteSpace(message))
+                    var repairArmour = RepairArmour(CancellationTokenSource);
+                    if (!repairArmour.Success)
                     {
-                        Warn("修头衣服常：" + message);
+                        Warn("修头衣服常：" + repairArmour.Message);
                         break;
                     }
 
@@ -132,16 +133,21 @@ namespace Jm.Core.Mir2.Helper
                     #endregion
                 }
                 #region 出发去挂机地图
-                message = ReadyGo(CancellationTokenSource);
-                if (!string.IsNullOrWhiteSpace(message))
+                var readyGo = ReadyGo(CancellationTokenSource);
+                if (!readyGo.Success)
                 {
-                    Warn("出发异常：" + message);
+                    Warn("出发异常：" + readyGo.Message);
                     break;
                 }
                 #endregion
 
                 //自动打怪
-                AutoFire(CancellationTokenSource);
+                var autoFire = AutoFire(CancellationTokenSource);
+                if(!autoFire.Success)
+                {
+                    Warn("自动打怪异常：" + autoFire.Message);
+                    break;
+                }
                 #endregion
             } while (MirContext.CancellationTokenSource.IsCancellationRequested);
         }
@@ -153,19 +159,19 @@ namespace Jm.Core.Mir2.Helper
         /// <param name="cancellationTokenSource"></param>
         /// <param name="distance"></param>
         /// <returns></returns>
-        public string MoveToPoint(MapInfo mapInfo, APoint point, CancellationTokenSource cancellationTokenSource, int distance = 2, Func<bool> func = null)
+        public ActionResult MoveToPoint(MapInfo mapInfo, APoint point, CancellationTokenSource cancellationTokenSource, int distance = 2, Func<bool> func = null)
         {
             var position = MirContext.Position;
             //同一个地图判断
             if (!position.MapInfo.Equals(mapInfo))
             {
-                return Consts.NotSameMap;
+                return new ActionResult(Consts.NotSameMap,"不在同一个地图");
             }
 
             //距离判断
             if (CalculationDistance(position.Point, point) <= distance)
             {
-                return string.Empty;
+                return new ActionResult();
             }
 
             /**
@@ -175,10 +181,11 @@ namespace Jm.Core.Mir2.Helper
             string message = string.Empty;
 
             #region 1.找到两个点的路径
-            var pathPoints = FindPath(position, point);
-            if (!pathPoints.Any())
+            var findPath = FindPath(position, point);
+            var pathPoints = findPath.Data;
+            if (findPath.Success && !pathPoints.Any())
             {
-                return Consts.AutoRoteFail;
+                return new ActionResult(Consts.AutoRoteFail, findPath.Message);
             }
             #endregion
 
@@ -207,7 +214,15 @@ namespace Jm.Core.Mir2.Helper
                     if (mirDirection == MirDirection.None)
                     {
                         //已经到达位置，需要重新计算路线
-                        pathPoints = FindPath(MirContext.Position, point);
+                        findPath = FindPath(MirContext.Position, point);
+                        if(findPath.Success && findPath.Data.Any())
+                        {
+                            pathPoints = findPath.Data;
+                        }
+                        else
+                        {
+                            pathPoints = new List<APoint>();
+                        }
                         continue;
                     }
                     #endregion
@@ -217,7 +232,9 @@ namespace Jm.Core.Mir2.Helper
                     #endregion
 
                     #region 移动
-                    moveState = MirAction.Move(mirDirection, runType);
+                    var actionResult = MirAction.Move(mirDirection, runType);
+                    //#TODO 判断 actionResult 状态，并输入日志
+                    moveState = actionResult.Data;
                     if (moveState)
                     {
                         //更新最后移动时间
@@ -246,7 +263,16 @@ namespace Jm.Core.Mir2.Helper
                     }
                     if(reFindPath)
                     {
-                        pathPoints = FindPath(MirContext.Position, point);
+                        findPath = FindPath(MirContext.Position, point);
+                        if (findPath.Success && findPath.Data.Any())
+                        {
+                            pathPoints = findPath.Data;
+                        }
+                        else
+                        {
+                            pathPoints = new List<APoint>();
+                            return new ActionResult(findPath.Code, findPath.Message);
+                        }
                     }
                     #endregion
                 }
@@ -257,21 +283,25 @@ namespace Jm.Core.Mir2.Helper
                 }
             }
             #endregion
-            return message;
+            return new ActionResult();
         }
 
-        public string MoveAndFireToPoint(MapInfo mapInfo, APoint point, CancellationTokenSource cancellationTokenSource, int distance = 2)
+        public ActionResult MoveAndFireToPoint(MapInfo mapInfo, APoint point, CancellationTokenSource cancellationTokenSource, int distance = 2)
         {
             return MoveToPoint(mapInfo,point,cancellationTokenSource,distance,()=> {
                 bool move = true;
-                var masters = MirAction.FindMaster();
+                var actionResult = MirAction.FindMaster();
+                //#TODO 判断 actionResult ,并输出日志
+                var masters = actionResult.Data;
                 while(masters.Any())
                 {
                     move = true;
                     var master = masters.NearbyMaster(MirContext.Position);
                     MirAction.AttackMaster(master, cancellationTokenSource);
                 }
-                var items = MirAction.FindItems();
+                var actionResult2= MirAction.FindItems();
+                //#TODO 判断 actionResult ,并输出日志
+                var items = actionResult2.Data;
                 while(items.Any())
                 {
                     //#TODO ,需要判断物品所在位置被人怪站住的情况
@@ -289,9 +319,9 @@ namespace Jm.Core.Mir2.Helper
         /// <param name="cancellationTokenSource"></param>
         /// <param name="distance"></param>
         /// <returns></returns>
-        public string RandomRangeMove(MapInfo mapInfo, Point point, CancellationTokenSource cancellationTokenSource, int distance = 2)
+        public ActionResult RandomRangeMove(MapInfo mapInfo, Point point, CancellationTokenSource cancellationTokenSource, int distance = 2)
         {
-            return string.Empty;
+            return new ActionResult();
         }
         #endregion
 
@@ -435,9 +465,9 @@ namespace Jm.Core.Mir2.Helper
         /// <param name="fromMap"></param>
         /// <param name="toMap"></param>
         /// <returns></returns>
-        protected string GoToMap(MapInfo fromMap, MapInfo toMap, CancellationTokenSource cancellationTokenSource)
+        protected ActionResult GoToMap(MapInfo fromMap, MapInfo toMap, CancellationTokenSource cancellationTokenSource)
         {
-            return string.Empty;
+            return new ActionResult();
         } 
         #endregion
 
@@ -446,185 +476,185 @@ namespace Jm.Core.Mir2.Helper
         /// 卖武器
         /// </summary>
         /// <returns></returns>
-        protected virtual string BuyWeapon(CancellationTokenSource cancellationTokenSource)
+        protected virtual ActionResult BuyWeapon(CancellationTokenSource cancellationTokenSource)
         {
-            return string.Empty;
+            return new ActionResult();
         }
         /// <summary>
         /// 卖武器
         /// </summary>
         /// <returns></returns>
-        protected virtual string SellWeapon(CancellationTokenSource cancellationTokenSource)
+        protected virtual ActionResult SellWeapon(CancellationTokenSource cancellationTokenSource)
         {
-            return string.Empty;
+            return new ActionResult();
         }
         /// <summary>
         /// 修理武器
         /// </summary>
         /// <returns></returns>
-        protected virtual string RepairWeapon(CancellationTokenSource cancellationTokenSource)
+        protected virtual ActionResult RepairWeapon(CancellationTokenSource cancellationTokenSource)
         {
-            return string.Empty;
+            return new ActionResult();
         }
         /// <summary>
         /// 买衣服
         /// </summary>
         /// <returns></returns>
-        protected virtual string BuyArmour(CancellationTokenSource cancellationTokenSource)
+        protected virtual ActionResult BuyArmour(CancellationTokenSource cancellationTokenSource)
         {
-            return string.Empty;
+            return new ActionResult();
         }
         /// <summary>
         /// 卖衣服
         /// </summary>
         /// <returns></returns>
-        protected virtual string SellArmour(CancellationTokenSource cancellationTokenSource)
+        protected virtual ActionResult SellArmour(CancellationTokenSource cancellationTokenSource)
         {
-            return string.Empty;
+            return new ActionResult();
         }
         /// <summary>
         /// 修理衣服
         /// </summary>
         /// <returns></returns>
-        protected virtual string RepairArmour(CancellationTokenSource cancellationTokenSource)
+        protected virtual ActionResult RepairArmour(CancellationTokenSource cancellationTokenSource)
         {
-            return string.Empty;
+            return new ActionResult();
         }
         /// <summary>
         /// 买头盔
         /// </summary>
         /// <returns></returns>
-        protected virtual string BuyHelmet(CancellationTokenSource cancellationTokenSource)
+        protected virtual ActionResult BuyHelmet(CancellationTokenSource cancellationTokenSource)
         {
-            return string.Empty;
+            return new ActionResult();
         }
         /// <summary>
         /// 卖头盔
         /// </summary>
         /// <returns></returns>
-        protected virtual string SellHelmet(CancellationTokenSource cancellationTokenSource)
+        protected virtual ActionResult SellHelmet(CancellationTokenSource cancellationTokenSource)
         {
-            return string.Empty;
+            return new ActionResult();
         }
         /// <summary>
         /// 修理头盔
         /// </summary>
         /// <returns></returns>
-        protected virtual string RepairHelmet(CancellationTokenSource cancellationTokenSource)
+        protected virtual ActionResult RepairHelmet(CancellationTokenSource cancellationTokenSource)
         {
-            return string.Empty;
+            return new ActionResult();
         }
         /// <summary>
         /// 买项链
         /// </summary>
         /// <returns></returns>
-        protected virtual string BuyNecklace(CancellationTokenSource cancellationTokenSource)
+        protected virtual ActionResult BuyNecklace(CancellationTokenSource cancellationTokenSource)
         {
-            return string.Empty;
+            return new ActionResult();
         }
         /// <summary>
         /// 卖项链
         /// </summary>
         /// <returns></returns>
-        protected virtual string SellNecklace(CancellationTokenSource cancellationTokenSource)
+        protected virtual ActionResult SellNecklace(CancellationTokenSource cancellationTokenSource)
         {
-            return string.Empty;
+            return new ActionResult();
         }
         /// <summary>
         /// 修理项链
         /// </summary>
         /// <returns></returns>
-        protected virtual string RepairNecklace(CancellationTokenSource cancellationTokenSource)
+        protected virtual ActionResult RepairNecklace(CancellationTokenSource cancellationTokenSource)
         {
-            return string.Empty;
+            return new ActionResult();
         }
         /// <summary>
         /// 买手镯
         /// </summary>
         /// <returns></returns>
-        protected virtual string BuyBracelet(CancellationTokenSource cancellationTokenSource)
+        protected virtual ActionResult BuyBracelet(CancellationTokenSource cancellationTokenSource)
         {
-            return string.Empty;
+            return new ActionResult();
         }
         /// <summary>
         /// 卖手镯
         /// </summary>
         /// <returns></returns>
-        protected virtual string SellBracelet(CancellationTokenSource cancellationTokenSource)
+        protected virtual ActionResult SellBracelet(CancellationTokenSource cancellationTokenSource)
         {
-            return string.Empty;
+            return new ActionResult();
         }
         /// <summary>
         /// 修理手镯
         /// </summary>
         /// <returns></returns>
-        protected virtual string RepairBracelet(CancellationTokenSource cancellationTokenSource)
+        protected virtual ActionResult RepairBracelet(CancellationTokenSource cancellationTokenSource)
         {
-            return string.Empty;
+            return new ActionResult();
         }
         /// <summary>
         /// 买戒指
         /// </summary>
         /// <returns></returns>
-        protected virtual string BuyRing(CancellationTokenSource cancellationTokenSource)
+        protected virtual ActionResult BuyRing(CancellationTokenSource cancellationTokenSource)
         {
-            return string.Empty;
+            return new ActionResult();
         }
         /// <summary>
         /// 卖戒指
         /// </summary>
         /// <returns></returns>
-        protected virtual string SellRing(CancellationTokenSource cancellationTokenSource)
+        protected virtual ActionResult SellRing(CancellationTokenSource cancellationTokenSource)
         {
-            return string.Empty;
+            return new ActionResult();
         }
         /// <summary>
         /// 修理戒指
         /// </summary>
         /// <returns></returns>
-        protected virtual string RepairRing(CancellationTokenSource cancellationTokenSource)
+        protected virtual ActionResult RepairRing(CancellationTokenSource cancellationTokenSource)
         {
-            return string.Empty;
+            return new ActionResult();
         }
         /// <summary>
         /// 买毒符
         /// </summary>
         /// <returns></returns>
-        protected virtual string BuyAmulet(CancellationTokenSource cancellationTokenSource)
+        protected virtual ActionResult BuyAmulet(CancellationTokenSource cancellationTokenSource)
         {
-            return string.Empty;
+            return new ActionResult();
         }
         /// <summary>
         /// 卖毒符
         /// </summary>
         /// <returns></returns>
-        protected virtual string SellAmulet(CancellationTokenSource cancellationTokenSource)
+        protected virtual ActionResult SellAmulet(CancellationTokenSource cancellationTokenSource)
         {
-            return string.Empty;
+            return new ActionResult();
         }
         /// <summary>
         /// 修理毒符
         /// </summary>
         /// <returns></returns>
-        protected virtual string RepairAmulet(CancellationTokenSource cancellationTokenSource)
+        protected virtual ActionResult RepairAmulet(CancellationTokenSource cancellationTokenSource)
         {
-            return string.Empty;
+            return new ActionResult();
         }
         /// <summary>
         /// 买药水
         /// </summary>
         /// <returns></returns>
-        protected virtual string BuyPotion(CancellationTokenSource cancellationTokenSource)
+        protected virtual ActionResult BuyPotion(CancellationTokenSource cancellationTokenSource)
         {
-            return string.Empty;
+            return new ActionResult();
         }
         /// <summary>
         /// 卖药水
         /// </summary>
         /// <returns></returns>
-        protected virtual string SellPotion(CancellationTokenSource cancellationTokenSource)
+        protected virtual ActionResult SellPotion(CancellationTokenSource cancellationTokenSource)
         {
-            return string.Empty;
+            return new ActionResult();
         }
         #endregion
 
@@ -634,76 +664,76 @@ namespace Jm.Core.Mir2.Helper
         /// <param name="position"></param>
         /// <param name="to"></param>
         /// <returns></returns>
-        protected List<APoint> FindPath(PositionInfo position, APoint to)
+        protected ActionResult<List<APoint>> FindPath(PositionInfo position, APoint to)
         {
             PathGrid pathGrid = new PathGrid(MirContext.ReadMap.Width, MirContext.ReadMap.Height, MirContext.Maze(position.MapInfo));
-            return pathGrid.FindPath(position.Point, to);
+            return new ActionResult<List<APoint>>(pathGrid.FindPath(position.Point, to));
         }
 
         /// <summary>
         /// 存装备
         /// </summary>
         /// <returns></returns>
-        protected virtual string Storage(CancellationTokenSource cancellationTokenSource)
+        protected virtual ActionResult Storage(CancellationTokenSource cancellationTokenSource)
         {
-            return string.Empty;
+            return new ActionResult();
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        protected virtual string ReadyGo(CancellationTokenSource cancellationTokenSource)
+        protected virtual ActionResult ReadyGo(CancellationTokenSource cancellationTokenSource)
         {
-            return string.Empty;
+            return new ActionResult();
         }
 
         /// <summary>
         /// 自动战斗
         /// </summary>
         /// <returns></returns>
-        protected virtual string AutoFire(CancellationTokenSource cancellationTokenSource)
+        protected virtual ActionResult AutoFire(CancellationTokenSource cancellationTokenSource)
         {
-            return string.Empty;
+            return new ActionResult();
         }
 
         /// <summary>
         /// 回城
         /// </summary>
         /// <returns></returns>
-        protected virtual string BackToCity(CancellationTokenSource cancellationTokenSource)
+        protected virtual ActionResult BackToCity(CancellationTokenSource cancellationTokenSource)
         {
-            return string.Empty;
+            return new ActionResult();
         }
         /// <summary>
         /// 检查药水
         /// </summary>
         /// <returns></returns>
-        protected bool CheckPotion()
+        protected ActionResult CheckPotion()
         {
-            return true;
+            return new ActionResult();
         }
         /// <summary>
         /// 检查装备持久
         /// </summary>
         /// <returns></returns>
-        protected bool CheckDurability()
+        protected ActionResult CheckDurability()
         {
-            return true;
+            return new ActionResult();
         }
         /// <summary>
         /// 检查包裹是否满了
         /// </summary>
         /// <returns></returns>
-        protected bool CheckPackage()
+        protected ActionResult CheckPackage()
         {
-            return true;
+            return new ActionResult();
         }
         /// <summary>
         /// 检查是否需要回城
         /// </summary>
         /// <returns></returns>
-        protected bool CheckBackToCity()
+        protected ActionResult CheckBackToCity()
         {
             //检查红药水数据量
             //检查蓝药水数量
@@ -711,7 +741,22 @@ namespace Jm.Core.Mir2.Helper
             //检查毒药数量
             //检查空包裹格子数量
             //检查装备持久度
-            return CheckPackage() || CheckDurability() || CheckPotion();
+            var checkPackage = CheckPackage();
+            if (!checkPackage.Success)
+            {
+                return checkPackage;
+            }
+            var checkDurability = CheckDurability();
+            if (!checkDurability.Success)
+            {
+                return checkDurability;
+            }
+            var checkPotion = CheckPotion();
+            if (!checkPotion.Success)
+            {
+                return checkPotion;
+            }
+            return new ActionResult();
         }
         #endregion
 

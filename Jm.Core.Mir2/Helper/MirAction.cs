@@ -13,147 +13,147 @@ namespace Jm.Core.Mir2.Helper
 {
     public class MirAction : IMirAction
     {
-        public void AttackMaster(MasterInfo masterInfo, CancellationTokenSource cancellationTokenSource)
+        public ActionResult AttackMaster(MasterInfo masterInfo, CancellationTokenSource cancellationTokenSource)
         {
             throw new NotImplementedException();
         }
 
-        public bool Buy(ItemInfo itemInfo)
+        public ActionResult<bool> Buy(ItemInfo itemInfo)
         {
             throw new NotImplementedException();
         }
 
-        public bool CloseMagicInfo()
+        public ActionResult<bool> CloseMagicInfo()
         {
             throw new NotImplementedException();
         }
 
-        public bool ClosePackage()
+        public ActionResult<bool> ClosePackage()
         {
             throw new NotImplementedException();
         }
 
-        public bool CloseRoleAttributeInfo()
+        public ActionResult<bool> CloseRoleAttributeInfo()
         {
             throw new NotImplementedException();
         }
 
-        public bool CloseRoleInfo()
+        public ActionResult<bool> CloseRoleInfo()
         {
             throw new NotImplementedException();
         }
 
-        public bool DialogueNPC(NPCInfo npcInfo)
+        public ActionResult<bool> DialogueNPC(NPCInfo npcInfo)
         {
             throw new NotImplementedException();
         }
 
-        public bool Exit()
+        public ActionResult<bool> Exit()
         {
             throw new NotImplementedException();
         }
 
-        public bool ExitRole()
+        public ActionResult<bool> ExitRole()
         {
             throw new NotImplementedException();
         }
 
-        public BaseNumber GetHP()
+        public ActionResult<List<ItemInfo>> FindItems()
         {
             throw new NotImplementedException();
         }
 
-        public List<ItemInfo> FindItems()
+        public ActionResult<List<MasterInfo>> FindMaster()
         {
             throw new NotImplementedException();
         }
 
-        public int GetLevel()
+        public ActionResult<BaseNumber> GetHP()
         {
             throw new NotImplementedException();
         }
 
-        public List<MasterInfo> FindMaster()
+        public ActionResult<int> GetLevel()
         {
             throw new NotImplementedException();
         }
 
-        public BaseNumber GetMP()
+        public ActionResult<BaseNumber> GetMP()
         {
             throw new NotImplementedException();
         }
 
-        public PositionInfo GetPosition()
+        public ActionResult<PositionInfo> GetPosition()
         {
             throw new NotImplementedException();
         }
 
-        public string GetRoleName()
+        public ActionResult<string> GetRoleName()
         {
             throw new NotImplementedException();
         }
 
-        public bool Move(MirDirection mirDirection, RunType runType)
+        public ActionResult<bool> Move(MirDirection mirDirection, RunType runType)
         {
             throw new NotImplementedException();
         }
 
-        public bool OpenMagicInfo()
+        public ActionResult<bool> OpenMagicInfo()
         {
             throw new NotImplementedException();
         }
 
-        public bool OpenPackage()
+        public ActionResult<bool> OpenPackage()
         {
             throw new NotImplementedException();
         }
 
-        public bool OpenRoleAttributeInfo()
+        public ActionResult<bool> OpenRoleAttributeInfo()
         {
             throw new NotImplementedException();
         }
 
-        public bool OpenRoleInfo()
+        public ActionResult<bool> OpenRoleInfo()
         {
             throw new NotImplementedException();
         }
 
-        public bool PickupItem(ItemInfo item)
+        public ActionResult<bool> PickupItem(ItemInfo item)
         {
             throw new NotImplementedException();
         }
 
-        public bool RandomMove(RunType runType)
+        public ActionResult<bool> RandomMove(RunType runType)
         {
             throw new NotImplementedException();
         }
 
-        public bool RandomMove(RunType runType, Point leftUp, Point rightDown)
+        public ActionResult<bool> RandomMove(RunType runType, Point leftUp, Point rightDown)
         {
             throw new NotImplementedException();
         }
 
-        public bool Repair(ItemInfo itemInfo)
+        public ActionResult<bool> Repair(ItemInfo itemInfo)
         {
             throw new NotImplementedException();
         }
 
-        public bool SelectDialogueContent(string content)
+        public ActionResult<bool> SelectDialogueContent(string content)
         {
             throw new NotImplementedException();
         }
 
-        public bool Sell(ItemInfo itemInfo)
+        public ActionResult<bool> Sell(ItemInfo itemInfo)
         {
             throw new NotImplementedException();
         }
 
-        public bool SRepair(ItemInfo itemInfo)
+        public ActionResult<bool> SRepair(ItemInfo itemInfo)
         {
             throw new NotImplementedException();
         }
 
-        public bool Storage(ItemInfo itemInfo)
+        public ActionResult<bool> Storage(ItemInfo itemInfo)
         {
             throw new NotImplementedException();
         }
