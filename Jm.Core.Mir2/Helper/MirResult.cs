@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Jm.Core.Mir2.Helper
 {
-    public class ActionResult
+    public class MirResult
     {
-        public ActionResult() { }
-        public ActionResult(int code, string message)
+        public MirResult() { }
+        public MirResult(int code, string message)
         {
             this.Code = code;
             this.Message = message;

@@ -159,19 +159,19 @@ namespace Jm.Core.Mir2.Helper
         /// <param name="cancellationTokenSource"></param>
         /// <param name="distance"></param>
         /// <returns></returns>
-        public ActionResult MoveToPoint(MapInfo mapInfo, APoint point, CancellationTokenSource cancellationTokenSource, int distance = 2, Func<bool> func = null)
+        public MirResult MoveToPoint(MapInfo mapInfo, APoint point, CancellationTokenSource cancellationTokenSource, int distance = 2, Func<bool> func = null)
         {
             var position = MirContext.Position;
             //同一个地图判断
             if (!position.MapInfo.Equals(mapInfo))
             {
-                return new ActionResult(Consts.NotSameMap,"不在同一个地图");
+                return new MirResult(Consts.NotSameMap,"不在同一个地图");
             }
 
             //距离判断
             if (CalculationDistance(position.Point, point) <= distance)
             {
-                return new ActionResult();
+                return new MirResult();
             }
 
             /**
@@ -185,7 +185,7 @@ namespace Jm.Core.Mir2.Helper
             var pathPoints = findPath.Data;
             if (findPath.Success && !pathPoints.Any())
             {
-                return new ActionResult(Consts.AutoRoteFail, findPath.Message);
+                return new MirResult(Consts.AutoRoteFail, findPath.Message);
             }
             #endregion
 
@@ -271,7 +271,7 @@ namespace Jm.Core.Mir2.Helper
                         else
                         {
                             pathPoints = new List<APoint>();
-                            return new ActionResult(findPath.Code, findPath.Message);
+                            return new MirResult(findPath.Code, findPath.Message);
                         }
                     }
                     #endregion
@@ -283,10 +283,10 @@ namespace Jm.Core.Mir2.Helper
                 }
             }
             #endregion
-            return new ActionResult();
+            return new MirResult();
         }
 
-        public ActionResult MoveAndFireToPoint(MapInfo mapInfo, APoint point, CancellationTokenSource cancellationTokenSource, int distance = 2)
+        public MirResult MoveAndFireToPoint(MapInfo mapInfo, APoint point, CancellationTokenSource cancellationTokenSource, int distance = 2)
         {
             return MoveToPoint(mapInfo,point,cancellationTokenSource,distance,()=> {
                 bool move = true;
@@ -319,9 +319,9 @@ namespace Jm.Core.Mir2.Helper
         /// <param name="cancellationTokenSource"></param>
         /// <param name="distance"></param>
         /// <returns></returns>
-        public ActionResult RandomRangeMove(MapInfo mapInfo, Point point, CancellationTokenSource cancellationTokenSource, int distance = 2)
+        public MirResult RandomRangeMove(MapInfo mapInfo, Point point, CancellationTokenSource cancellationTokenSource, int distance = 2)
         {
-            return new ActionResult();
+            return new MirResult();
         }
         #endregion
 
@@ -465,9 +465,9 @@ namespace Jm.Core.Mir2.Helper
         /// <param name="fromMap"></param>
         /// <param name="toMap"></param>
         /// <returns></returns>
-        protected ActionResult GoToMap(MapInfo fromMap, MapInfo toMap, CancellationTokenSource cancellationTokenSource)
+        protected MirResult GoToMap(MapInfo fromMap, MapInfo toMap, CancellationTokenSource cancellationTokenSource)
         {
-            return new ActionResult();
+            return new MirResult();
         } 
         #endregion
 
@@ -476,185 +476,185 @@ namespace Jm.Core.Mir2.Helper
         /// 卖武器
         /// </summary>
         /// <returns></returns>
-        protected virtual ActionResult BuyWeapon(CancellationTokenSource cancellationTokenSource)
+        protected virtual MirResult BuyWeapon(CancellationTokenSource cancellationTokenSource)
         {
-            return new ActionResult();
+            return new MirResult();
         }
         /// <summary>
         /// 卖武器
         /// </summary>
         /// <returns></returns>
-        protected virtual ActionResult SellWeapon(CancellationTokenSource cancellationTokenSource)
+        protected virtual MirResult SellWeapon(CancellationTokenSource cancellationTokenSource)
         {
-            return new ActionResult();
+            return new MirResult();
         }
         /// <summary>
         /// 修理武器
         /// </summary>
         /// <returns></returns>
-        protected virtual ActionResult RepairWeapon(CancellationTokenSource cancellationTokenSource)
+        protected virtual MirResult RepairWeapon(CancellationTokenSource cancellationTokenSource)
         {
-            return new ActionResult();
+            return new MirResult();
         }
         /// <summary>
         /// 买衣服
         /// </summary>
         /// <returns></returns>
-        protected virtual ActionResult BuyArmour(CancellationTokenSource cancellationTokenSource)
+        protected virtual MirResult BuyArmour(CancellationTokenSource cancellationTokenSource)
         {
-            return new ActionResult();
+            return new MirResult();
         }
         /// <summary>
         /// 卖衣服
         /// </summary>
         /// <returns></returns>
-        protected virtual ActionResult SellArmour(CancellationTokenSource cancellationTokenSource)
+        protected virtual MirResult SellArmour(CancellationTokenSource cancellationTokenSource)
         {
-            return new ActionResult();
+            return new MirResult();
         }
         /// <summary>
         /// 修理衣服
         /// </summary>
         /// <returns></returns>
-        protected virtual ActionResult RepairArmour(CancellationTokenSource cancellationTokenSource)
+        protected virtual MirResult RepairArmour(CancellationTokenSource cancellationTokenSource)
         {
-            return new ActionResult();
+            return new MirResult();
         }
         /// <summary>
         /// 买头盔
         /// </summary>
         /// <returns></returns>
-        protected virtual ActionResult BuyHelmet(CancellationTokenSource cancellationTokenSource)
+        protected virtual MirResult BuyHelmet(CancellationTokenSource cancellationTokenSource)
         {
-            return new ActionResult();
+            return new MirResult();
         }
         /// <summary>
         /// 卖头盔
         /// </summary>
         /// <returns></returns>
-        protected virtual ActionResult SellHelmet(CancellationTokenSource cancellationTokenSource)
+        protected virtual MirResult SellHelmet(CancellationTokenSource cancellationTokenSource)
         {
-            return new ActionResult();
+            return new MirResult();
         }
         /// <summary>
         /// 修理头盔
         /// </summary>
         /// <returns></returns>
-        protected virtual ActionResult RepairHelmet(CancellationTokenSource cancellationTokenSource)
+        protected virtual MirResult RepairHelmet(CancellationTokenSource cancellationTokenSource)
         {
-            return new ActionResult();
+            return new MirResult();
         }
         /// <summary>
         /// 买项链
         /// </summary>
         /// <returns></returns>
-        protected virtual ActionResult BuyNecklace(CancellationTokenSource cancellationTokenSource)
+        protected virtual MirResult BuyNecklace(CancellationTokenSource cancellationTokenSource)
         {
-            return new ActionResult();
+            return new MirResult();
         }
         /// <summary>
         /// 卖项链
         /// </summary>
         /// <returns></returns>
-        protected virtual ActionResult SellNecklace(CancellationTokenSource cancellationTokenSource)
+        protected virtual MirResult SellNecklace(CancellationTokenSource cancellationTokenSource)
         {
-            return new ActionResult();
+            return new MirResult();
         }
         /// <summary>
         /// 修理项链
         /// </summary>
         /// <returns></returns>
-        protected virtual ActionResult RepairNecklace(CancellationTokenSource cancellationTokenSource)
+        protected virtual MirResult RepairNecklace(CancellationTokenSource cancellationTokenSource)
         {
-            return new ActionResult();
+            return new MirResult();
         }
         /// <summary>
         /// 买手镯
         /// </summary>
         /// <returns></returns>
-        protected virtual ActionResult BuyBracelet(CancellationTokenSource cancellationTokenSource)
+        protected virtual MirResult BuyBracelet(CancellationTokenSource cancellationTokenSource)
         {
-            return new ActionResult();
+            return new MirResult();
         }
         /// <summary>
         /// 卖手镯
         /// </summary>
         /// <returns></returns>
-        protected virtual ActionResult SellBracelet(CancellationTokenSource cancellationTokenSource)
+        protected virtual MirResult SellBracelet(CancellationTokenSource cancellationTokenSource)
         {
-            return new ActionResult();
+            return new MirResult();
         }
         /// <summary>
         /// 修理手镯
         /// </summary>
         /// <returns></returns>
-        protected virtual ActionResult RepairBracelet(CancellationTokenSource cancellationTokenSource)
+        protected virtual MirResult RepairBracelet(CancellationTokenSource cancellationTokenSource)
         {
-            return new ActionResult();
+            return new MirResult();
         }
         /// <summary>
         /// 买戒指
         /// </summary>
         /// <returns></returns>
-        protected virtual ActionResult BuyRing(CancellationTokenSource cancellationTokenSource)
+        protected virtual MirResult BuyRing(CancellationTokenSource cancellationTokenSource)
         {
-            return new ActionResult();
+            return new MirResult();
         }
         /// <summary>
         /// 卖戒指
         /// </summary>
         /// <returns></returns>
-        protected virtual ActionResult SellRing(CancellationTokenSource cancellationTokenSource)
+        protected virtual MirResult SellRing(CancellationTokenSource cancellationTokenSource)
         {
-            return new ActionResult();
+            return new MirResult();
         }
         /// <summary>
         /// 修理戒指
         /// </summary>
         /// <returns></returns>
-        protected virtual ActionResult RepairRing(CancellationTokenSource cancellationTokenSource)
+        protected virtual MirResult RepairRing(CancellationTokenSource cancellationTokenSource)
         {
-            return new ActionResult();
+            return new MirResult();
         }
         /// <summary>
         /// 买毒符
         /// </summary>
         /// <returns></returns>
-        protected virtual ActionResult BuyAmulet(CancellationTokenSource cancellationTokenSource)
+        protected virtual MirResult BuyAmulet(CancellationTokenSource cancellationTokenSource)
         {
-            return new ActionResult();
+            return new MirResult();
         }
         /// <summary>
         /// 卖毒符
         /// </summary>
         /// <returns></returns>
-        protected virtual ActionResult SellAmulet(CancellationTokenSource cancellationTokenSource)
+        protected virtual MirResult SellAmulet(CancellationTokenSource cancellationTokenSource)
         {
-            return new ActionResult();
+            return new MirResult();
         }
         /// <summary>
         /// 修理毒符
         /// </summary>
         /// <returns></returns>
-        protected virtual ActionResult RepairAmulet(CancellationTokenSource cancellationTokenSource)
+        protected virtual MirResult RepairAmulet(CancellationTokenSource cancellationTokenSource)
         {
-            return new ActionResult();
+            return new MirResult();
         }
         /// <summary>
         /// 买药水
         /// </summary>
         /// <returns></returns>
-        protected virtual ActionResult BuyPotion(CancellationTokenSource cancellationTokenSource)
+        protected virtual MirResult BuyPotion(CancellationTokenSource cancellationTokenSource)
         {
-            return new ActionResult();
+            return new MirResult();
         }
         /// <summary>
         /// 卖药水
         /// </summary>
         /// <returns></returns>
-        protected virtual ActionResult SellPotion(CancellationTokenSource cancellationTokenSource)
+        protected virtual MirResult SellPotion(CancellationTokenSource cancellationTokenSource)
         {
-            return new ActionResult();
+            return new MirResult();
         }
         #endregion
 
@@ -674,66 +674,66 @@ namespace Jm.Core.Mir2.Helper
         /// 存装备
         /// </summary>
         /// <returns></returns>
-        protected virtual ActionResult Storage(CancellationTokenSource cancellationTokenSource)
+        protected virtual MirResult Storage(CancellationTokenSource cancellationTokenSource)
         {
-            return new ActionResult();
+            return new MirResult();
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        protected virtual ActionResult ReadyGo(CancellationTokenSource cancellationTokenSource)
+        protected virtual MirResult ReadyGo(CancellationTokenSource cancellationTokenSource)
         {
-            return new ActionResult();
+            return new MirResult();
         }
 
         /// <summary>
         /// 自动战斗
         /// </summary>
         /// <returns></returns>
-        protected virtual ActionResult AutoFire(CancellationTokenSource cancellationTokenSource)
+        protected virtual MirResult AutoFire(CancellationTokenSource cancellationTokenSource)
         {
-            return new ActionResult();
+            return new MirResult();
         }
 
         /// <summary>
         /// 回城
         /// </summary>
         /// <returns></returns>
-        protected virtual ActionResult BackToCity(CancellationTokenSource cancellationTokenSource)
+        protected virtual MirResult BackToCity(CancellationTokenSource cancellationTokenSource)
         {
-            return new ActionResult();
+            return new MirResult();
         }
         /// <summary>
         /// 检查药水
         /// </summary>
         /// <returns></returns>
-        protected ActionResult CheckPotion()
+        protected MirResult CheckPotion()
         {
-            return new ActionResult();
+            return new MirResult();
         }
         /// <summary>
         /// 检查装备持久
         /// </summary>
         /// <returns></returns>
-        protected ActionResult CheckDurability()
+        protected MirResult CheckDurability()
         {
-            return new ActionResult();
+            return new MirResult();
         }
         /// <summary>
         /// 检查包裹是否满了
         /// </summary>
         /// <returns></returns>
-        protected ActionResult CheckPackage()
+        protected MirResult CheckPackage()
         {
-            return new ActionResult();
+            return new MirResult();
         }
         /// <summary>
         /// 检查是否需要回城
         /// </summary>
         /// <returns></returns>
-        protected ActionResult CheckBackToCity()
+        protected MirResult CheckBackToCity()
         {
             //检查红药水数据量
             //检查蓝药水数量
@@ -756,7 +756,7 @@ namespace Jm.Core.Mir2.Helper
             {
                 return checkPotion;
             }
-            return new ActionResult();
+            return new MirResult();
         }
         #endregion
 

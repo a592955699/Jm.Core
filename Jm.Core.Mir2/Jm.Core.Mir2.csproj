@@ -46,7 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helper\ActionResult.cs" />
+    <Compile Include="Helper\MirResult.cs" />
     <Compile Include="Helper\Consts.cs" />
     <Compile Include="Helper\Enums\AttackMode.cs" />
     <Compile Include="Helper\Enums\BuffType.cs" />
