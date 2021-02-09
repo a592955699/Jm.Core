@@ -13,7 +13,7 @@ namespace Jm.Core.Mir2.Helper
 {
     public class MirAction : IMirAction
     {
-        public ActionResult AttackMaster(MasterInfo masterInfo, CancellationTokenSource cancellationTokenSource)
+        public MirResult AttackMaster(MasterInfo masterInfo, CancellationTokenSource cancellationTokenSource)
         {
             throw new NotImplementedException();
         }

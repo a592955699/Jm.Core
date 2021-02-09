@@ -82,7 +82,7 @@ namespace Jm.Core.Mir2.Helper
         /// 打怪
         /// </summary>
         /// <param name="masterInfo"></param>
-        ActionResult AttackMaster(MasterInfo masterInfo, CancellationTokenSource cancellationTokenSource);
+        MirResult AttackMaster(MasterInfo masterInfo, CancellationTokenSource cancellationTokenSource);
         /// <summary>
         /// 小退
         /// </summary>
