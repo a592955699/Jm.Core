@@ -1,6 +1,5 @@
 ﻿using Jm.Core.Mir2.Helper.Enums;
 using Jm.Core.Mir2.Helper.Models;
-using Jm.Core.Mir2.Server.VisualMapInfo.Class.AStart;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

@@ -1,5 +1,4 @@
 ﻿using Jm.Core.Mir2.Server.VisualMapInfo.Class;
-using Jm.Core.Mir2.Server.VisualMapInfo.Class.AStart;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -82,8 +81,8 @@ namespace Jm.Core.Mir2.Helper.Models
         /// <summary>
         /// 临时障碍物
         /// </summary>
-        /// <param name="aPoint"></param>
-        public void AddBartPoint(APoint point,MapInfo map,DateTime dateTime)
+        /// <param name="Point"></param>
+        public void AddBartPoint(Point point,MapInfo map,DateTime dateTime)
         {
             barPoints.Add(new BarPoint(point, map, dateTime));
         }
@@ -124,14 +123,14 @@ namespace Jm.Core.Mir2.Helper.Models
     public class BarPoint
     {
         public BarPoint() { }
-        public BarPoint(APoint point,MapInfo map,DateTime dateTime) {
+        public BarPoint(Point point,MapInfo map,DateTime dateTime) {
             this.DateTime = dateTime;
             this.Point = point;
             this.Map = map;
         }
         public DateTime DateTime { get; set; }
         public MapInfo Map { get; set; }
-        public APoint Point { get; set; }
+        public Point Point { get; set; }
     }
 
 }

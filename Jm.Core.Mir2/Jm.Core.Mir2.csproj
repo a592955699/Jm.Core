@@ -82,9 +82,7 @@
     <Compile Include="Helper\Models\RoleAttributeInfo.cs" />
     <Compile Include="Helper\Models\RoleInfo.cs" />
     <Compile Include="Helper\Models\WeaponryInfo.cs" />
-    <Compile Include="Server\VisualMapInfo\Class\AStart\APoint.cs" />
-    <Compile Include="Server\VisualMapInfo\Class\AStart\PathGrid.cs" />
-    <Compile Include="Server\VisualMapInfo\Class\AStart\PathNode.cs" />
+    <Compile Include="Server\VisualMapInfo\Class\AStart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server\VisualMapInfo\Class\LockBitmap.cs" />
     <Compile Include="Server\VisualMapInfo\Class\ReadMap.cs" />

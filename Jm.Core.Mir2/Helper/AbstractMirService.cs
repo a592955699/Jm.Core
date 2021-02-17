@@ -1,7 +1,6 @@
 ﻿using Jm.Core.Mir2.Helper.Enums;
 using Jm.Core.Mir2.Helper.Extensions;
 using Jm.Core.Mir2.Helper.Models;
-using Jm.Core.Mir2.Server.VisualMapInfo.Class.AStart;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -159,7 +158,7 @@ namespace Jm.Core.Mir2.Helper
         /// <param name="cancellationTokenSource"></param>
         /// <param name="distance"></param>
         /// <returns></returns>
-        public MirResult MoveToPoint(MapInfo mapInfo, APoint point, CancellationTokenSource cancellationTokenSource, int distance = 2, Func<bool> func = null)
+        public MirResult MoveToPoint(MapInfo mapInfo, Point point, CancellationTokenSource cancellationTokenSource, int distance = 2, Func<bool> func = null)
         {
             var position = MirContext.Position;
             //同一个地图判断
@@ -190,8 +189,8 @@ namespace Jm.Core.Mir2.Helper
             #endregion
 
             #region 循环路径，一个个点的走过去（需要考虑人怪卡位问题）
-            APoint firstAPoint = pathPoints.FirstOrDefault();
-            //APoint secondAPoint = null;
+            Point firstPoint = pathPoints.FirstOrDefault();
+            //Point secondPoint = null;
             MirDirection mirDirection = MirDirection.None;
             RunType runType = RunType.FastRun;
             //移动是否成功
@@ -202,7 +201,7 @@ namespace Jm.Core.Mir2.Helper
             //没有被取消
             //同一个地图
             //距离大于 distance
-            while (firstAPoint != null
+            while (firstPoint != null
                 && !cancellationTokenSource.IsCancellationRequested
                 && position.MapInfo.Equals(mapInfo)
                 && CalculationDistance(position.Point, point) > distance)
@@ -210,7 +209,7 @@ namespace Jm.Core.Mir2.Helper
                 try
                 {
                     #region 计算移动方向
-                    mirDirection = CalculationDirection(position.Point, firstAPoint);
+                    mirDirection = CalculationDirection(position.Point, firstPoint);
                     if (mirDirection == MirDirection.None)
                     {
                         //已经到达位置，需要重新计算路线
@@ -221,14 +220,14 @@ namespace Jm.Core.Mir2.Helper
                         }
                         else
                         {
-                            pathPoints = new List<APoint>();
+                            pathPoints = new List<Point>();
                         }
                         continue;
                     }
                     #endregion
 
                     #region 计算移动方式
-                    runType = CalculationRunType(position, firstAPoint);
+                    runType = CalculationRunType(position, firstPoint);
                     #endregion
 
                     #region 移动
@@ -239,7 +238,7 @@ namespace Jm.Core.Mir2.Helper
                     {
                         //更新最后移动时间
                         MirContext.LastMoveTime = new DateTime();
-                        pathPoints.Remove(firstAPoint);
+                        pathPoints.Remove(firstPoint);
 
                         //打怪过程有移动过，这重新寻路
                         if (func != null)
@@ -270,7 +269,7 @@ namespace Jm.Core.Mir2.Helper
                         }
                         else
                         {
-                            pathPoints = new List<APoint>();
+                            pathPoints = new List<Point>();
                             return new MirResult(findPath.Code, findPath.Message);
                         }
                     }
@@ -278,7 +277,7 @@ namespace Jm.Core.Mir2.Helper
                 }
                 finally
                 {
-                    firstAPoint = pathPoints.FirstOrDefault();
+                    firstPoint = pathPoints.FirstOrDefault();
                     position = MirContext.Position;
                 }
             }
@@ -286,7 +285,7 @@ namespace Jm.Core.Mir2.Helper
             return new MirResult();
         }
 
-        public MirResult MoveAndFireToPoint(MapInfo mapInfo, APoint point, CancellationTokenSource cancellationTokenSource, int distance = 2)
+        public MirResult MoveAndFireToPoint(MapInfo mapInfo, Point point, CancellationTokenSource cancellationTokenSource, int distance = 2)
         {
             return MoveToPoint(mapInfo,point,cancellationTokenSource,distance,()=> {
                 bool move = true;
@@ -343,7 +342,7 @@ namespace Jm.Core.Mir2.Helper
         /// <param name="p1"></param>
         /// <param name="p2"></param>
         /// <returns></returns>
-        public MirDirection CalculationDirection(APoint p1, APoint p2)
+        public MirDirection CalculationDirection(Point p1, Point p2)
         {
             if (p2 == null || p1 == null)
                 return MirDirection.None;
@@ -379,35 +378,35 @@ namespace Jm.Core.Mir2.Helper
             else
                 return MirDirection.None;
         }
-        public APoint GetNextPoint(APoint point, MirDirection mirDirection, RunType runType)
+        public Point GetNextPoint(Point point, MirDirection mirDirection, RunType runType)
         {
             int step = runType == RunType.Normal ? 1 : 2;
-            APoint temp = null;
+            Point temp = new Point();
             switch (mirDirection)
             {
                 case MirDirection.Up:
-                    temp = new APoint(point.X, point.Y + step);
+                    temp = new Point(point.X, point.Y + step);
                     break;
                 case MirDirection.UpRight:
-                    temp = new APoint(point.X + step, point.Y + step);
+                    temp = new Point(point.X + step, point.Y + step);
                     break;
                 case MirDirection.Right:
-                    temp = new APoint(point.X + step, point.Y);
+                    temp = new Point(point.X + step, point.Y);
                     break;
                 case MirDirection.DownRight:
-                    temp = new APoint(point.X + step, point.Y - step);
+                    temp = new Point(point.X + step, point.Y - step);
                     break;
                 case MirDirection.Down:
-                    temp = new APoint(point.X, point.Y - step);
+                    temp = new Point(point.X, point.Y - step);
                     break;
                 case MirDirection.DownLeft:
-                    temp = new APoint(point.X - step, point.Y - step);
+                    temp = new Point(point.X - step, point.Y - step);
                     break;
                 case MirDirection.Left:
-                    temp = new APoint(point.X - step, point.Y );
+                    temp = new Point(point.X - step, point.Y );
                     break;
                 case MirDirection.UpLeft:
-                    temp = new APoint(point.X - step, point.Y + step);
+                    temp = new Point(point.X - step, point.Y + step);
                     break;
             }
             return temp;
@@ -419,7 +418,7 @@ namespace Jm.Core.Mir2.Helper
         /// <param name="p1"></param>
         /// <param name="p2"></param>
         /// <returns></returns>
-        public int CalculationDistance(APoint p1, APoint p2)
+        public int CalculationDistance(Point p1, Point p2)
         {
             int dx = Math.Abs(p1.X - p2.Y);
             int dy = Math.Abs(p1.Y - p2.Y);
@@ -433,7 +432,7 @@ namespace Jm.Core.Mir2.Helper
         /// <param name="p2"></param>
         /// <param name="p3"></param>
         /// <returns></returns>
-        public RunType CalculationRunType(PositionInfo position, APoint p2)
+        public RunType CalculationRunType(PositionInfo position, Point p2)
         {
             var xd = position.Point.X - p2.X;
             var yd = position.Point.Y - p2.Y;
@@ -443,7 +442,7 @@ namespace Jm.Core.Mir2.Helper
             }
             else
             {
-                //APoint p3 = new APoint(p2.X + x, p2.Y + y);
+                //Point p3 = new Point(p2.X + x, p2.Y + y);
                 var maze = MirContext.Maze(position.MapInfo);
                 int x = p2.X + xd;
                 int y = p2.Y + yd;
@@ -664,10 +663,11 @@ namespace Jm.Core.Mir2.Helper
         /// <param name="position"></param>
         /// <param name="to"></param>
         /// <returns></returns>
-        protected ActionResult<List<APoint>> FindPath(PositionInfo position, APoint to)
+        protected ActionResult<List<Point>> FindPath(PositionInfo position, Point to)
         {
-            PathGrid pathGrid = new PathGrid(MirContext.ReadMap.Width, MirContext.ReadMap.Height, MirContext.Maze(position.MapInfo));
-            return new ActionResult<List<APoint>>(pathGrid.FindPath(position.Point, to));
+            return null;
+            //PathGrid pathGrid = new PathGrid(MirContext.ReadMap.Width, MirContext.ReadMap.Height, MirContext.Maze(position.MapInfo));
+            //return new ActionResult<List<Point>>(pathGrid.FindPath(position.Point, to));
         }
 
         /// <summary>

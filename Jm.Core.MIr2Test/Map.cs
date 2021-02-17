@@ -1,5 +1,5 @@
-﻿using Jm.Core.Mir2.Server.VisualMapInfo.Class;
-using Jm.Core.Mir2.Server.VisualMapInfo.Class.AStart;
+﻿using Jm.Core.Mir2;
+using Jm.Core.Mir2.Server.VisualMapInfo.Class;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -26,7 +26,7 @@ namespace Jm.Core.MIr2Test
 
         int width, height;
         ReadMap readMap = new ReadMap();
-        List<APoint> points = new List<APoint>();
+        List<Point> points = new List<Point>();
         private void Form1_Load(object sender, EventArgs e)
         {
            
@@ -42,9 +42,10 @@ namespace Jm.Core.MIr2Test
             var start = points[0];
             var end = points[1];
             Stopwatch stopwatch = new Stopwatch();
-            PathGrid pathGrid = new PathGrid(readMap.Width, readMap.Height, readMap.Maze);
+
+            AutoRoute autoRoute = new AutoRoute(readMap.Maze);
             stopwatch.Start();
-            var tempPoints = pathGrid.FindPath(start, end);
+            var tempPoints = autoRoute.FindeWay(start, end);
             stopwatch.Stop();
             if (tempPoints == null || tempPoints.Count == 0)
             {
@@ -75,7 +76,7 @@ namespace Jm.Core.MIr2Test
         {
             lbl_info.Text = "";
 
-            if(readMap.Maze[e.X,e.Y]==1)
+            if(readMap.Maze[e.X,e.Y]==0)
             {
                 MessageBox.Show("This point is a bar!");
                 return;
@@ -87,7 +88,7 @@ namespace Jm.Core.MIr2Test
                 pic_map.Image = (Bitmap)readMap.clippingZone.Clone();
             }
 
-            points.Add(new APoint(e.X, e.Y));
+            points.Add(new Point(e.X, e.Y));
 
             var start = points[0];
             lbl_start.Text = $"X:{start.X} Y:{start.Y}";

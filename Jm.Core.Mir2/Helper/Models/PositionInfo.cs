@@ -1,5 +1,4 @@
-﻿using Jm.Core.Mir2.Server.VisualMapInfo.Class.AStart;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -17,6 +16,6 @@ namespace Jm.Core.Mir2.Helper.Models
         /// <summary>
         /// 坐标信息
         /// </summary>
-        public APoint Point { get; set; }
+        public Point Point { get; set; }
     }
 }

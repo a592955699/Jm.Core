@@ -14,7 +14,7 @@ namespace Jm.Core.Mir2.Server.VisualMapInfo.Class
 
         private int[,] maze;
         /// <summary>
-        /// 地图迷宫，1:障碍物  0:可以通行
+        /// 地图迷宫，1表示可通过，0表示障碍物
         /// </summary>
         public int[,] Maze
         {
@@ -30,7 +30,7 @@ namespace Jm.Core.Mir2.Server.VisualMapInfo.Class
                         for (int y = 0; y < Height; y++)
                         {
                             var color = BitLock.GetPixel(x, y);
-                            maze[x, y] = (color.A==Color.Black.A&& color.B == Color.Black.B&& color.G == Color.Black.G) ? 1 : 0;
+                            maze[x, y] = (color.A==Color.Black.A&& color.B == Color.Black.B&& color.G == Color.Black.G) ? 0 : 1;
                         }
                     }
                     BitLock.UnlockBits();
