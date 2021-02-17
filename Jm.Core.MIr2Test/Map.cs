@@ -43,7 +43,7 @@ namespace Jm.Core.MIr2Test
             var end = points[1];
             Stopwatch stopwatch = new Stopwatch();
 
-            AutoRoute autoRoute = new AutoRoute(readMap.Maze);
+            AutoRoute autoRoute = new AutoRoute((int[,])readMap.Maze.Clone());
             stopwatch.Start();
             var tempPoints = autoRoute.FindeWay(start, end);
             stopwatch.Stop();
