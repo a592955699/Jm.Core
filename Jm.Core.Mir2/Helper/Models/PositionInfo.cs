@@ -17,5 +17,9 @@ namespace Jm.Core.Mir2.Helper.Models
         /// 坐标信息
         /// </summary>
         public Point Point { get; set; }
+        public override string ToString()
+        {
+            return $"{MapInfo.Name} ({Point.X}:{Point.Y})";
+        }
     }
 }

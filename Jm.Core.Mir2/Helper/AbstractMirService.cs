@@ -1,6 +1,7 @@
 ﻿using Jm.Core.Mir2.Helper.Enums;
 using Jm.Core.Mir2.Helper.Extensions;
 using Jm.Core.Mir2.Helper.Models;
+using Jm.Core.Mir2.Server.VisualMapInfo.Class;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -12,7 +13,7 @@ namespace Jm.Core.Mir2.Helper
     /// 挂机流程控制抽象类
     /// <para>调用 IMirAction 方法来实现功能流程，不在该类中些具体的单个小点的实现</para>
     /// </summary>
-    public abstract class AbstractMirService
+    public  class AbstractMirService
     {
         #region 构造函数
         public AbstractMirService(MirContext mirContext, CancellationTokenSource cancellationTokenSource)
@@ -212,16 +213,17 @@ namespace Jm.Core.Mir2.Helper
                     mirDirection = CalculationDirection(position.Point, firstPoint);
                     if (mirDirection == MirDirection.None)
                     {
+                        pathPoints.Remove(firstPoint);
                         //已经到达位置，需要重新计算路线
-                        findPath = FindPath(MirContext.Position, point);
-                        if(findPath.Success && findPath.Data.Any())
-                        {
-                            pathPoints = findPath.Data;
-                        }
-                        else
-                        {
-                            pathPoints = new List<Point>();
-                        }
+                        //findPath = FindPath(MirContext.Position, point);
+                        //if(findPath.Success && findPath.Data.Any())
+                        //{
+                        //    pathPoints = findPath.Data;
+                        //}
+                        //else
+                        //{
+                        //    pathPoints = new List<Point>();
+                        //}
                         continue;
                     }
                     #endregion
@@ -665,7 +667,16 @@ namespace Jm.Core.Mir2.Helper
         /// <returns></returns>
         protected ActionResult<List<Point>> FindPath(PositionInfo position, Point to)
         {
-            return null;
+            ReadMap readMap = new ReadMap();
+            readMap.mapFile = @"F:\Program Files\ShengquGames\Legend of mir\Map\3.map";
+            readMap.Load();
+
+            MirContext.ReadMap = readMap;
+
+            AutoRoute autoRoute = new AutoRoute((int[,])readMap.Maze.Clone());
+
+            var tempPoints = autoRoute.FindeWay(to, position.Point);
+            return new ActionResult<List<Point>>(tempPoints);
             //PathGrid pathGrid = new PathGrid(MirContext.ReadMap.Width, MirContext.ReadMap.Height, MirContext.Maze(position.MapInfo));
             //return new ActionResult<List<Point>>(pathGrid.FindPath(position.Point, to));
         }

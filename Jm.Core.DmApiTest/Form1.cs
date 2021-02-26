@@ -128,7 +128,7 @@ namespace Jm.Core.TestForms
         {
             int dm_ret = dmsoft.Reg(new Reg()
             {
-                RegCode = "2663231107dbcf6e2076d4e2787c9b72afbe6165d1",
+                RegCode = "688208012349ddc91cdb6516bbcc6ad787a50d5bbfe",
                 WorkPath = @"C:\Users\rober\Desktop\dm root"
             });
             dmsoft.AddDict(0, "宋体10.txt");

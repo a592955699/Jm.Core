@@ -9,11 +9,8 @@ namespace Jm.Core.Mir2.Helper.Models
 {
     public class MirContext
     {
-        public MirContext(IMirAction mirAction)
-        {
-            MirAction = mirAction;
-        }
-        public IMirAction MirAction { get; private set; }
+        public IMirAction MirAction { get; set; }
+        public int Hwnd { get; set; }
 
         /// <summary>
         /// 
@@ -116,6 +113,8 @@ namespace Jm.Core.Mir2.Helper.Models
                 return ReadMap.Maze;
             }
         }
+
+        public Point MouseCenter { get; set; } = new Point(400,235);
     }
     /// <summary>
     /// 临时障碍物

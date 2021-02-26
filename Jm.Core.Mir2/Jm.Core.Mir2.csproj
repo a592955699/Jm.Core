@@ -90,6 +90,11 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Jm.Core.DmApi\Jm.Core.DmApi.csproj">
+      <Project>{656f87f6-effd-4ae6-8734-b510b33dfa89}</Project>
+      <Name>Jm.Core.DmApi</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

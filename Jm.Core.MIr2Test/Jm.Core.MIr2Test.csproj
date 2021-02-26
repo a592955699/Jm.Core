@@ -53,10 +53,19 @@
     <Compile Include="Map.Designer.cs">
       <DependentUpon>Map.cs</DependentUpon>
     </Compile>
+    <Compile Include="MirTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MirTest.Designer.cs">
+      <DependentUpon>MirTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Map.resx">
       <DependentUpon>Map.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MirTest.resx">
+      <DependentUpon>MirTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -81,10 +90,19 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Jm.Core.DmApi\Jm.Core.DmApi.csproj">
+      <Project>{656f87f6-effd-4ae6-8734-b510b33dfa89}</Project>
+      <Name>Jm.Core.DmApi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Jm.Core.Mir2\Jm.Core.Mir2.csproj">
       <Project>{8a238702-7048-4cd7-bf80-18aa1ce98383}</Project>
       <Name>Jm.Core.Mir2</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Data\宋体10.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -8,6 +8,11 @@ namespace Jm.Core.Mir2.Helper.Models
 {
     public class BaseNumber
     {
+        public BaseNumber() { }
+        public BaseNumber(int current,int max) {
+            this.Max = max;
+            this.Current = current;
+        }
         /// <summary>
         /// 但前置
         /// </summary>

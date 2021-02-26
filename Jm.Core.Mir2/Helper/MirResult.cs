@@ -16,7 +16,7 @@ namespace Jm.Core.Mir2.Helper
         }
         public int Code { get; set; }
         public string Message { get; set; }
-        public bool Success { get; set; }
+        public bool Success { get { return Code == 0; } }
     }
     public class ActionResult<T>
     {
@@ -34,6 +34,6 @@ namespace Jm.Core.Mir2.Helper
         public int Code { get; set; }
         public string Message { get; set; }
         public T Data { get; set; }
-        public bool Success { get; set; }
+        public bool Success { get { return Code == 0; } }
     }
 }
